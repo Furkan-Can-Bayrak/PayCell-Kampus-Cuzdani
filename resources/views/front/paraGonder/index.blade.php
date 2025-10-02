@@ -11,49 +11,49 @@
       a { color: inherit; text-decoration: none; }
       #stars { position:fixed; inset:0; width:100%; height:100%; z-index:0; background: radial-gradient(1400px 700px at 80% -10%, rgba(0,58,112,.35), transparent 62%), radial-gradient(900px 480px at 12% 112%, rgba(10,32,64,.6), transparent 60%), linear-gradient(180deg, #000a1a 0%, #00040b 100%); }
       .container { max-width: 800px; margin: 0 auto; padding: 16px; position:relative; z-index:1; }
-      
+
       .header { display:flex; align-items:center; gap:12px; padding:12px 0; margin-bottom:24px; }
       .back-btn { width:40px; height:40px; border-radius:10px; background:#0b1a33; display:grid; place-items:center; cursor:pointer; border:1px solid var(--border); transition:.2s; }
       .back-btn:hover { background:#0d2142; transform: translateY(-1px); }
       .header-title { font-weight:700; font-size:20px; }
-      
+
       .card { background: linear-gradient(180deg, #071223, #060f1e); border:1px solid var(--border); border-radius:16px; padding:20px; box-shadow: 0 10px 30px rgba(0,0,0,.35); margin-bottom:16px; }
-      
+
       .balance-section { text-align:center; margin-bottom:24px; }
       .balance-label { color:var(--muted); font-size:14px; margin-bottom:8px; }
       .balance-amount { font-size:32px; font-weight:800; color:var(--accent); }
-      
+
       .section-title { font-size:16px; font-weight:700; margin-bottom:16px; color:var(--text); }
-      
+
       .friends-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin-bottom:20px; }
       @media(min-width:640px){ .friends-grid { grid-template-columns: repeat(3, 1fr);} }
       @media(min-width:800px){ .friends-grid { grid-template-columns: repeat(4, 1fr);} }
-      
+
       .friend-card { background:#0b1a33; border:2px solid var(--border); border-radius:12px; padding:12px; cursor:pointer; transition:.2s; text-align:center; }
       .friend-card:hover { background:#0d2142; transform: translateY(-1px); }
       .friend-card.selected { border-color:var(--accent); background:#0d2142; }
       .friend-avatar { width:48px; height:48px; border-radius:999px; background:#1f2937; display:flex; align-items:center; justify-content:center; font-weight:700; margin:0 auto 8px; color:#ffdd33; }
       .friend-name { font-weight:600; font-size:14px; }
       .friend-status { font-size:11px; color:var(--muted); margin-top:2px; }
-      
+
       .amount-section { margin-bottom:20px; }
       .amount-input { width:100%; padding:16px; background:#0b1a33; border:1px solid var(--border); border-radius:12px; color:var(--text); font-size:18px; font-weight:600; text-align:center; }
       .amount-input:focus { outline:none; border-color:var(--accent); }
       .amount-label { display:block; margin-bottom:8px; font-weight:600; }
-      
+
       .selected-friends { margin-bottom:20px; }
       .selected-list { display:flex; flex-wrap:wrap; gap:8px; }
       .selected-friend { background:#0d2142; border:1px solid var(--accent); border-radius:20px; padding:6px 12px; display:flex; align-items:center; gap:8px; font-size:12px; }
       .remove-friend { width:16px; height:16px; border-radius:999px; background:var(--danger); color:white; display:grid; place-items:center; cursor:pointer; font-size:10px; }
-      
+
       .send-btn { width:100%; padding:16px; background:linear-gradient(135deg, var(--accent), #ffe066); color:#001; border:none; border-radius:12px; font-weight:700; font-size:16px; cursor:pointer; transition:.2s; box-shadow:0 6px 20px rgba(255,204,0,.2); }
       .send-btn:hover { transform: translateY(-2px); box-shadow:0 8px 25px rgba(255,204,0,.3); }
       .send-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
-      
+
       .summary { background:#0b1a33; border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:20px; }
       .summary-row { display:flex; justify-content:space-between; margin-bottom:8px; }
       .summary-row:last-child { margin-bottom:0; font-weight:700; font-size:16px; color:var(--accent); border-top:1px solid var(--border); padding-top:8px; }
-      
+
       /* Modal Styles */
       .modal { position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px; }
       .modal.show { display:flex !important; }
@@ -74,23 +74,23 @@
       .modal-friend-item:last-child { margin-bottom:0; }
       .modal-friend-avatar { width:24px; height:24px; border-radius:50%; background:#1f2937; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#ffdd33; }
       .modal-friend-name { font-size:14px; color:var(--text); }
-      
+
       @keyframes modalSlideIn {
         from { opacity:0; transform:scale(0.9) translateY(-20px); }
         to { opacity:1; transform:scale(1) translateY(0); }
       }
-      
+
       .success-icon { width:60px; height:60px; margin:0 auto 16px; background:linear-gradient(135deg, #10b981, #059669); border-radius:50%; display:flex; align-items:center; justify-content:center; }
       .success-icon svg { width:30px; height:30px; }
-      
+
       .confirm-icon { width:60px; height:60px; margin:0 auto 16px; background:linear-gradient(135deg, var(--accent), #ffe066); border-radius:50%; display:flex; align-items:center; justify-content:center; }
       .confirm-icon svg { width:30px; height:30px; }
-      
+
       /* Loading Animation */
       .loading-spinner { width:40px; height:40px; margin:0 auto 16px; }
       .spinner { width:40px; height:40px; border:3px solid rgba(255,204,0,0.3); border-top:3px solid var(--accent); border-radius:50%; animation:spin 1s linear infinite; }
       @keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
-      
+
       .loading-text { text-align:center; color:var(--text); font-size:16px; margin-bottom:8px; }
       .loading-subtext { text-align:center; color:var(--muted); font-size:14px; }
     </style>
@@ -99,7 +99,7 @@
     <canvas id="stars"></canvas>
     <div class="container">
       <div class="header">
-        <a href="#" class="back-btn">
+        <a href="{{route('home')}}" class="back-btn">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M19 12H5M12 19l-7-7 7-7" stroke="#ffdd33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -144,7 +144,7 @@
           <label class="amount-label" for="amountInput">Tutar (₺)</label>
           <input type="number" id="amountInput" class="amount-input" placeholder="0,00" step="0.01" min="0.01">
         </div>
-        
+
         <div class="summary" id="summarySection" style="display:none;">
           <div class="summary-row">
             <span>Seçilen Arkadaş Sayısı:</span>
@@ -159,7 +159,7 @@
             <span id="totalAmount">₺ 0,00</span>
           </div>
         </div>
-        
+
         <button class="send-btn" id="sendBtn" disabled>Para Gönder</button>
       </div>
     </div>
@@ -326,7 +326,7 @@
       const perPersonAmount = document.getElementById('perPersonAmount');
       const totalAmount = document.getElementById('totalAmount');
       const balanceAmount = document.getElementById('balanceAmount');
-      
+
       // Modal elements
       const confirmModal = document.getElementById('confirmModal');
       const loadingModal = document.getElementById('loadingModal');
@@ -348,33 +348,33 @@
             <div class="modal-friend-name">${friend.name} ${friend.surname}</div>
           </div>
         `).join('');
-        
+
         confirmAmount.innerHTML = `
           <div>Kişi başı: ₺ ${amount.toFixed(2).replace('.', ',')}</div>
           <div>Toplam: ₺ ${totalAmount.toFixed(2).replace('.', ',')}</div>
         `;
-        
+
         confirmModal.classList.add('show');
       }
-      
+
       function hideConfirmModal() {
         confirmModal.classList.remove('show');
       }
-      
+
       function showSuccessModal(totalAmount, newBalanceAmount) {
         successAmount.textContent = `₺ ${totalAmount.toFixed(2).replace('.', ',')}`;
         newBalance.textContent = `₺ ${newBalanceAmount.toFixed(2).replace('.', ',')}`;
         successModal.classList.add('show');
       }
-      
+
       function hideSuccessModal() {
         successModal.classList.remove('show');
       }
-      
+
       function showLoadingModal() {
         loadingModal.classList.add('show');
       }
-      
+
       function hideLoadingModal() {
         loadingModal.classList.remove('show');
       }
@@ -410,11 +410,11 @@
       function updateSummary() {
         const amount = parseFloat(amountInput.value) || 0;
         const count = selectedFriends.length;
-        
+
         if (count > 0 && amount > 0) {
           const perPerson = amount; // Her kişiye aynı tutar
           const total = amount * count; // Toplam gönderilecek tutar
-          
+
           friendCount.textContent = count;
           perPersonAmount.textContent = `₺ ${perPerson.toFixed(2).replace('.', ',')}`;
           totalAmount.textContent = `₺ ${total.toFixed(2).replace('.', ',')}`;
@@ -446,7 +446,7 @@
             card.classList.remove('selected');
           }
         });
-        
+
         updateSelectedList();
         updateSummary();
         updateSendButton();
@@ -464,7 +464,7 @@
         const count = selectedFriends.length;
         const totalAmount = amount * count;
         const friendNames = selectedFriends.map(f => `${f.name} ${f.surname}`).join(', ');
-        
+
         showConfirmModal(amount, count, totalAmount, friendNames);
       });
 
@@ -477,21 +477,21 @@
         const amount = parseFloat(amountInput.value);
         const count = selectedFriends.length;
         const totalAmount = amount * count;
-        
+
         // Hide confirm modal and show loading modal
         hideConfirmModal();
         showLoadingModal();
-        
+
         // Simulate processing for 1 second
         setTimeout(() => {
           // Bakiye güncelle
           currentBalance -= totalAmount;
           updateBalance();
-          
+
           // Hide loading modal and show success modal
           hideLoadingModal();
           showSuccessModal(totalAmount, currentBalance);
-          
+
           // Reset form
           selectedFriends = [];
           amountInput.value = '';
@@ -527,7 +527,7 @@
       document.querySelectorAll('.friend-card').forEach(card => {
         const friendId = parseInt(card.getAttribute('data-friend-id'));
         const friend = friends.find(f => f.id === friendId);
-        
+
         card.addEventListener('click', () => {
           toggleFriendSelection(friend);
         });
