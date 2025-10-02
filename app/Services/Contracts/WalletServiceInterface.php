@@ -40,4 +40,14 @@ interface WalletServiceInterface
      * @return Wallet
      */
     public function loadMoney(int $userId, float $amount): Wallet;
+
+    /**
+     * Arkadaşlara para gönderir
+     *
+     * @param int $senderId
+     * @param array $friendIds
+     * @param float $amount
+     * @return array
+     */
+    public function sendMoney(int $senderId, array $friendIds, float $amount): array;
 }

@@ -39,4 +39,13 @@ interface WalletRepositoryInterface extends BaseRepositoryInterface
      * @return Wallet
      */
     public function addBalance(int $walletId, float $amount): Wallet;
+
+    /**
+     * Cüzdan bakiyesini azaltır
+     *
+     * @param int $walletId
+     * @param float $amount
+     * @return Wallet
+     */
+    public function subtractBalance(int $walletId, float $amount): Wallet;
 }

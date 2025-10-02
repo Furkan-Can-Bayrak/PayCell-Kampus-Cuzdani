@@ -64,4 +64,18 @@ class WalletRepository extends BaseRepository implements WalletRepositoryInterfa
         $wallet->increment('balance', $amount);
         return $wallet->fresh();
     }
+
+    /**
+     * Cüzdan bakiyesini azaltır
+     *
+     * @param int $walletId
+     * @param float $amount
+     * @return Wallet
+     */
+    public function subtractBalance(int $walletId, float $amount): Wallet
+    {
+        $wallet = $this->findByIdOrFail($walletId);
+        $wallet->decrement('balance', $amount);
+        return $wallet->fresh();
+    }
 }

@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Para Gönder - Kampüs Dijital Cüzdan</title>
     <style>
       :root { --bg:#000816; --panel:#071223; --muted:#94a3b8; --text:#e8edf6; --accent:#ffcc00; --accent-2:#003a70; --danger:#ef4444; --warning:#ffcc00; --card:#06101f; --border:#0f2747; }
@@ -473,30 +474,65 @@
         hideConfirmModal();
       });
 
-      confirmSendBtn.addEventListener('click', () => {
+      confirmSendBtn.addEventListener('click', async () => {
         const amount = parseFloat(amountInput.value);
         const count = selectedFriends.length;
         const totalAmount = amount * count;
-
+        
         // Hide confirm modal and show loading modal
         hideConfirmModal();
         showLoadingModal();
+        
+        try {
+          // Debug: Log request data
+          console.log('Sending request:', {
+            friend_ids: selectedFriends.map(f => f.id),
+            amount: amount
+          });
 
-        // Simulate processing for 1 second
-        setTimeout(() => {
-          // Bakiye güncelle
-          currentBalance -= totalAmount;
-          updateBalance();
+          // Send money via API
+          const response = await fetch('/send-money', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            },
+            body: JSON.stringify({
+              friend_ids: selectedFriends.map(f => parseInt(f.id)),
+              amount: parseFloat(amount)
+            })
+          });
 
-          // Hide loading modal and show success modal
+          console.log('Response status:', response.status);
+          console.log('Response ok:', response.ok);
+
+          const data = await response.json();
+          console.log('Response data:', data);
+
+          if (response.ok && data.success) {
+            // Update balance from server response
+            currentBalance = data.balance;
+            updateBalance();
+            
+            // Hide loading modal and show success modal
+            hideLoadingModal();
+            showSuccessModal(data.transferred_amount, currentBalance);
+            
+            // Reset form
+            selectedFriends = [];
+            amountInput.value = '';
+            updateUI();
+          } else {
+            // Hide loading modal and show error
+            hideLoadingModal();
+            alert(data.message || 'Para gönderme işlemi başarısız!');
+          }
+        } catch (error) {
+          console.error('Error details:', error);
+          console.error('Error message:', error.message);
           hideLoadingModal();
-          showSuccessModal(totalAmount, currentBalance);
-
-          // Reset form
-          selectedFriends = [];
-          amountInput.value = '';
-          updateUI();
-        }, 1000);
+          alert('Bağlantı hatası oluştu: ' + error.message);
+        }
       });
 
       closeSuccessBtn.addEventListener('click', () => {
