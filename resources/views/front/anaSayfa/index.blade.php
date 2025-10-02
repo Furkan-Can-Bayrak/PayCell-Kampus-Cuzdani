@@ -223,13 +223,13 @@
                   <div class="qsub">Hızlı ödeme</div>
                 </div>
               </div>
-              <div class="quick" data-action="send">
+              <a href="{{ route('para-gonder') }}" class="quick">
               <div class="qicon q-send">→</div>
                 <div class="qtext">
                   <div class="qtitle">Para Gönder</div>
                   <div class="qsub">Arkadaşına</div>
                 </div>
-              </div>
+              </a>
               <div class="quick" data-action="load">
               <div class="qicon q-load">+</div>
                 <div class="qtext">
@@ -571,7 +571,6 @@
       document.querySelectorAll('.quick').forEach(q=>{
         q.addEventListener('click', ()=>{
           const action = q.getAttribute('data-action');
-          alert(`${action} ekranı (fake)`);
         });
       });
 

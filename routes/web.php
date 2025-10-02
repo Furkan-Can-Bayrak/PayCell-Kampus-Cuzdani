@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Front\FrontController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 
 // Ana sayfa (auth zorunlu)
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('front.anaSayfa.index');
-    });
+    Route::get('/', [FrontController::class, 'index']);
+    Route::get('/para-gonder', [FrontController::class, 'paraGonder'])->name('para-gonder');
 });
 
 // Auth routes
