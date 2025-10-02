@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Kampüs Dijital Cüzdan - Ana Ekran</title>
     <style>
       :root { --bg:#000816; --panel:#071223; --muted:#94a3b8; --text:#e8edf6; --accent:#ffcc00; --accent-2:#003a70; --danger:#ef4444; --warning:#ffcc00; --card:#06101f; --border:#0f2747; }
@@ -115,6 +116,139 @@
       .add-category:hover { background:#0d2142; border-color:var(--accent); }
       .add-icon { width:36px; height:36px; border-radius:8px; background:rgba(255,204,0,.15); color:#ffcc00; display:grid; place-items:center; font-size:20px; }
       .add-text { font-weight:600; font-size:14px; color:var(--accent); }
+      
+      /* Modal Styles */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: none;
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      .modal.show {
+        display: flex !important;
+      }
+      
+      .modal-content {
+        background: linear-gradient(180deg, #071223, #060f1e);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 32px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.35);
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+      }
+      
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 24px;
+      }
+      
+      .modal-title {
+        font-weight: 700;
+        font-size: 20px;
+        color: var(--text);
+      }
+      
+      .modal-close {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: var(--text);
+      }
+      
+      .modal-close:hover {
+        background: #0d2142;
+        transform: translateY(-1px);
+      }
+      
+      .modal-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .modal-input {
+        width: 100%;
+        padding: 12px 16px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 16px;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+      
+      .modal-input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(255,204,0,.1);
+      }
+      
+      .modal-input::placeholder {
+        color: var(--muted);
+      }
+      
+      .modal-buttons {
+        display: flex;
+        gap: 12px;
+      }
+      
+      .modal-btn {
+        flex: 1;
+        padding: 12px 16px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .modal-btn-primary {
+        background: linear-gradient(135deg, var(--accent), #ffe066);
+        color: #001;
+        box-shadow: 0 6px 20px rgba(255,204,0,.2);
+      }
+      
+      .modal-btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 25px rgba(255,204,0,.3);
+      }
+      
+      .modal-btn-secondary {
+        background: #0b1a33;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      
+      .modal-btn-secondary:hover {
+        background: #0d2142;
+        transform: translateY(-1px);
+      }
+      
+      .modal-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+      }
     </style>
   </head>
   <body>
@@ -133,17 +267,17 @@
             <span class="badge" id="notifCount">3</span>
           </div>
           <div class="user-info">
-            <div class="user-name">Ali Veli</div>
+            <div class="user-name">{{ auth()->user()->name }}</div>
             <div class="user-sub">Öğrenci</div>
           </div>
-          <div class="avatar" id="profileBtn">AV</div>
+          <div class="avatar" id="profileBtn">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
 
           <div class="profile-panel" id="profilePanel">
             <div class="profile-header">
-              <div class="profile-avatar">AV</div>
+              <div class="profile-avatar">{{ strtoupper(substr(auth()->user()->name, 0, 2)) }}</div>
               <div class="profile-info">
-                <div class="profile-name">Ali Veli</div>
-                <div class="profile-email">ali.veli@university.edu.tr</div>
+                <div class="profile-name">{{ auth()->user()->name }}</div>
+                <div class="profile-email">{{ auth()->user()->email }}</div>
               </div>
             </div>
             <div class="profile-menu">
@@ -211,9 +345,8 @@
             <div class="balance-row">
               <div>
                 <div class="balance-label">Güncel Bakiye</div>
-                <div class="balance-amount" id="balanceAmount">₺ 2.450,75</div>
+                <div class="balance-amount" id="balanceAmount">₺ {{ number_format($wallet->balance, 2, ',', '.') }}</div>
               </div>
-              <button class="btn btn-primary" id="addMoneyBtn">Para Yükle</button>
             </div>
             <div class="quick-grid">
               <div class="quick" data-action="qr">
@@ -230,7 +363,7 @@
                   <div class="qsub">Arkadaşına</div>
                 </div>
               </a>
-              <div class="quick" data-action="load">
+              <div class="quick" data-action="load" id="quickLoadBtn">
               <div class="qicon q-load">+</div>
                 <div class="qtext">
                   <div class="qtitle">Para Yükle</div>
@@ -261,6 +394,37 @@
             <div class="list" id="lastActivities"></div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Para Yükle Modal -->
+    <div class="modal" id="loadMoneyModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Para Yükle</h2>
+          <button class="modal-close" id="closeModal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        
+        <form class="modal-form" id="loadMoneyForm">
+          <input 
+            type="number" 
+            id="amountInput" 
+            class="modal-input" 
+            placeholder="Miktar girin (₺)"
+            min="1"
+            max="10000"
+            required
+          >
+          
+          <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-secondary" id="cancelBtn">İptal</button>
+            <button type="submit" class="modal-btn modal-btn-primary" id="submitBtn">Yükle</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -604,6 +768,129 @@
           profilePanel.style.display = 'none';
         });
       });
+
+      // Modal functionality
+      const loadMoneyModal = document.getElementById('loadMoneyModal');
+      const addMoneyBtn = document.getElementById('addMoneyBtn');
+      const quickLoadBtn = document.getElementById('quickLoadBtn');
+      const closeModal = document.getElementById('closeModal');
+      const cancelBtn = document.getElementById('cancelBtn');
+      const loadMoneyForm = document.getElementById('loadMoneyForm');
+      const amountInput = document.getElementById('amountInput');
+      const submitBtn = document.getElementById('submitBtn');
+      const balanceAmount = document.getElementById('balanceAmount');
+
+      // Function to open modal
+      function openModal() {
+        if (loadMoneyModal) {
+          loadMoneyModal.classList.add('show');
+          loadMoneyModal.style.display = 'flex';
+          if (amountInput) {
+            setTimeout(() => amountInput.focus(), 100);
+          }
+        }
+      }
+
+      // Open modal - Ana para yükle butonu
+      if (addMoneyBtn) {
+        addMoneyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal();
+        });
+      }
+
+      // Open modal - Quick para yükle butonu
+      if (quickLoadBtn) {
+        quickLoadBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          openModal();
+        });
+      }
+
+      // Close modal functions
+      function closeModalFunc() {
+        if (loadMoneyModal) {
+          loadMoneyModal.classList.remove('show');
+          loadMoneyModal.style.display = 'none';
+        }
+        if (loadMoneyForm) {
+          loadMoneyForm.reset();
+        }
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Yükle';
+        }
+      }
+
+      if (closeModal) {
+        closeModal.addEventListener('click', closeModalFunc);
+      }
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', closeModalFunc);
+      }
+
+      // Close modal when clicking outside
+      if (loadMoneyModal) {
+        loadMoneyModal.addEventListener('click', (e) => {
+          if (e.target === loadMoneyModal) {
+            closeModalFunc();
+          }
+        });
+      }
+
+      // Handle form submission
+      if (loadMoneyForm) {
+        loadMoneyForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          const amount = parseInt(amountInput.value);
+          
+          if (!amount || amount < 1 || amount > 10000) {
+            alert('Lütfen 1-10000 arasında bir miktar girin.');
+            return;
+          }
+
+          // Loading state
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Yükleniyor...';
+          }
+
+          try {
+            const response = await fetch('/load-money', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+              },
+              body: JSON.stringify({ amount })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+              // Update balance display
+              if (balanceAmount) {
+                balanceAmount.textContent = `₺ ${data.balance.toFixed(2).replace('.', ',')}`;
+              }
+              
+              // Close modal
+              closeModalFunc();
+            } else {
+              // Show specific error message from server
+              alert(data.message || 'Para yükleme işlemi başarısız!');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+          } finally {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Yükle';
+            }
+          }
+        });
+      }
 
       renderActivities();
       renderNotifications();

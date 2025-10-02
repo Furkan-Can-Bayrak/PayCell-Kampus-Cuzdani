@@ -17,9 +17,11 @@ class AppServiceProvider extends ServiceProvider
     {
         // Repository bindings
         $this->app->bind(AuthRepositoryInterface::class, AuthRepository::class);
+        $this->app->bind(\App\Repositories\Contracts\WalletRepositoryInterface::class, \App\Repositories\WalletRepository::class);
         
         // Service bindings
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
+        $this->app->bind(\App\Services\Contracts\WalletServiceInterface::class, \App\Services\WalletService::class);
     }
 
     /**

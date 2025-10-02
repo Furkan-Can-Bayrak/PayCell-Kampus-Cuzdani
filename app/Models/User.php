@@ -41,4 +41,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Kullanıcının cüzdanı
+     */
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
 }

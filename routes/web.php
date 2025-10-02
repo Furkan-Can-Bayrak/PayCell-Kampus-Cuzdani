@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [FrontController::class, 'index']);
     Route::get('/para-gonder', [FrontController::class, 'paraGonder'])->name('para-gonder');
+    Route::post('/load-money', [FrontController::class, 'loadMoney'])->name('load-money');
 });
 
 // Auth routes
