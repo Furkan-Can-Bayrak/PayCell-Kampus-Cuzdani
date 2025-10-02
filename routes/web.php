@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/h', function () {
+    return view('front.arkadaslaraBol.index');
+})->name('home');
+
 // Ana sayfa (auth zorunlu)
 Route::middleware('auth')->group(function () {
     Route::get('/', [FrontController::class, 'index'])->name('home');
@@ -38,3 +42,6 @@ Route::prefix('auth')->group(function () {
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     });
 });
+
+
+
