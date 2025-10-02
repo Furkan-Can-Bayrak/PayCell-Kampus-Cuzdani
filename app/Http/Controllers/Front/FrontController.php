@@ -34,7 +34,11 @@ class FrontController extends Controller
      */
     public function paraGonder(): View
     {
-        return view('front.paraGonder.index');
+        $user = auth()->user();
+        $wallet = $this->walletService->getUserWallet($user->id);
+        $friends = $user->friends;
+        
+        return view('front.paraGonder.index', compact('wallet', 'friends'));
     }
 
     /**

@@ -49,4 +49,45 @@ class User extends Authenticatable
     {
         return $this->hasOne(Wallet::class);
     }
+
+    /**
+     * Kullanıcının gönderdiği arkadaşlık istekleri
+     */
+    public function sentFriendRequests()
+    {
+        return $this->hasMany(Friend::class, 'user_id');
+    }
+
+    /**
+     * Kullanıcının aldığı arkadaşlık istekleri
+     */
+    public function receivedFriendRequests()
+    {
+        return $this->hasMany(Friend::class, 'friend_id');
+    }
+
+    /**
+     * Kullanıcının arkadaşları (kabul edilmiş)
+     */
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+                    ->wherePivot('status', 'accepted')
+                    ->withTimestamps();
+    }
+
+    /**
+     * Kullanıcının arkadaşları (karşılıklı)
+     */
+    public function mutualFriends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+                    ->wherePivot('status', 'accepted')
+                    ->withTimestamps()
+                    ->union(
+                        $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+                            ->wherePivot('status', 'accepted')
+                            ->withTimestamps()
+                    );
+    }
 }
