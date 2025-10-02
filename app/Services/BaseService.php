@@ -1,9 +1,9 @@
 <?php
 
-namespace {{ namespace }}\Services;
+namespace App\Services;
 
-use {{ namespace }}\Repositories\Contracts\BaseRepositoryInterface;
-use {{ namespace }}\Repositories\Criteria\QueryParameters;
+use App\Repositories\Contracts\BaseRepositoryInterface;
+use App\Repositories\Criteria\QueryParameters;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
