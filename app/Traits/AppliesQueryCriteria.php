@@ -1,8 +1,8 @@
 <?php
 
-namespace Fukibay\StarterPack\Traits;
+namespace App\Traits;
 
-use Fukibay\StarterPack\Criteria\QueryParameters;
+use App\Repositories\Criteria\QueryParameters;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
