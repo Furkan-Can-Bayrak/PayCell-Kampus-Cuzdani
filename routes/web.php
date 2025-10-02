@@ -14,21 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Ana sayfa
-Route::get('/', function () {
-    return view('front.anaSayfa.index');
+// Ana sayfa (auth zorunlu)
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('front.anaSayfa.index');
+    });
 });
 
 // Auth routes
 Route::prefix('auth')->group(function () {
-    // Login routes
-    Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('login', [AuthController::class, 'login']);
-    
-    // Register routes
-    Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
-    Route::post('register', [AuthController::class, 'register']);
-    
-    // Logout route
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    // Sadece misafirler erişebilsin
+    Route::middleware('guest')->group(function () {
+        Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
+        Route::post('login', [AuthController::class, 'login']);
+        Route::get('register', [AuthController::class, 'showRegisterForm'])->name('register');
+        Route::post('register', [AuthController::class, 'register']);
+    });
+
+    // Giriş yapmış kullanıcılar
+    Route::middleware('auth')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    });
 });
