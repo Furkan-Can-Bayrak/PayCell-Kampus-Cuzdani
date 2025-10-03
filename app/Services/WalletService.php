@@ -64,7 +64,24 @@ class WalletService extends BaseService implements WalletServiceInterface
     {
         return DB::transaction(function () use ($userId, $amount) {
             $wallet = $this->repository->findOrCreateByUserId($userId);
-            return $this->repository->addBalance($wallet->id, $amount);
+            $previousBalance = $wallet->balance;
+            $updatedWallet = $this->repository->addBalance($wallet->id, $amount);
+            
+            // Transaction kaydı oluştur
+            \App\Models\Transaction::create([
+                'user_id' => $userId,
+                'merchant_id' => null,
+                'amount' => $amount,
+                'currency' => 'TRY',
+                'type' => \App\Models\Transaction::TYPE_TOPUP,
+                'meta' => [
+                    'method' => 'wallet_topup',
+                    'previous_balance' => $previousBalance,
+                    'new_balance' => $updatedWallet->balance,
+                ],
+            ]);
+            
+            return $updatedWallet;
         });
     }
 
@@ -85,15 +102,92 @@ class WalletService extends BaseService implements WalletServiceInterface
             // Gönderenin bakiyesinden düş
             $senderWallet = $this->repository->subtractBalance($senderWallet->id, $totalAmount);
             
-            // Her arkadaşın bakiyesine ekle
+            // Gönderen için transfer_out transaction
+            \App\Models\Transaction::create([
+                'user_id' => $senderId,
+                'merchant_id' => null,
+                'amount' => $totalAmount,
+                'currency' => 'TRY',
+                'type' => \App\Models\Transaction::TYPE_TRANSFER_OUT,
+                'meta' => [
+                    'recipient_count' => count($friendIds),
+                    'amount_per_recipient' => $amount,
+                    'recipient_ids' => $friendIds,
+                ],
+            ]);
+            
+            // Her arkadaşın bakiyesine ekle ve transaction oluştur
             foreach ($friendIds as $friendId) {
                 $friendWallet = $this->repository->findOrCreateByUserId($friendId);
                 $this->repository->addBalance($friendWallet->id, $amount);
+                
+                // Alıcı için transfer_in transaction
+                \App\Models\Transaction::create([
+                    'user_id' => $friendId,
+                    'merchant_id' => null,
+                    'amount' => $amount,
+                    'currency' => 'TRY',
+                    'type' => \App\Models\Transaction::TYPE_TRANSFER_IN,
+                    'meta' => [
+                        'sender_id' => $senderId,
+                        'transfer_type' => 'friend_transfer',
+                    ],
+                ]);
             }
             
             return [
                 'sender_balance' => $senderWallet->balance,
                 'transferred_amount' => $totalAmount,
+            ];
+        });
+    }
+
+    /**
+     * QR kod ile ödeme işlemi
+     *
+     * @param int $userId
+     * @param float $amount
+     * @param string $qrId
+     * @param int $merchantId
+     * @return array
+     */
+    public function processQrPayment(int $userId, float $amount, string $qrId, int $merchantId): array
+    {
+        return DB::transaction(function () use ($userId, $amount, $qrId, $merchantId) {
+            $userWallet = $this->repository->findOrCreateByUserId($userId);
+            $previousBalance = $userWallet->balance;
+            
+            // Kullanıcının bakiyesinden düş
+            $userWallet = $this->repository->subtractBalance($userWallet->id, $amount);
+            
+            // Payment transaction kaydı oluştur
+            \App\Models\Transaction::create([
+                'user_id' => $userId,
+                'merchant_id' => $merchantId,
+                'amount' => $amount,
+                'currency' => 'TRY',
+                'type' => \App\Models\Transaction::TYPE_PAYMENT,
+                'meta' => [
+                    'qr_id' => $qrId,
+                    'payment_method' => 'qr_code',
+                    'previous_balance' => $previousBalance,
+                    'new_balance' => $userWallet->balance,
+                ],
+            ]);
+            
+            \Log::info('QR Payment processed', [
+                'user_id' => $userId,
+                'merchant_id' => $merchantId,
+                'amount' => $amount,
+                'qr_id' => $qrId,
+                'user_new_balance' => $userWallet->balance
+            ]);
+            
+            return [
+                'user_balance' => $userWallet->balance,
+                'amount_paid' => $amount,
+                'qr_id' => $qrId,
+                'merchant_id' => $merchantId,
             ];
         });
     }

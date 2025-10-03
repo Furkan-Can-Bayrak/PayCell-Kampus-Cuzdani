@@ -90,4 +90,12 @@ class User extends Authenticatable
                             ->withTimestamps()
                     );
     }
+
+    /**
+     * Get all transactions for the user.
+     */
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

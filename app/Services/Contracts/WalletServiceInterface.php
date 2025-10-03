@@ -50,4 +50,15 @@ interface WalletServiceInterface
      * @return array
      */
     public function sendMoney(int $senderId, array $friendIds, float $amount): array;
+
+    /**
+     * QR kod ile ödeme işlemi
+     *
+     * @param int $userId
+     * @param float $amount
+     * @param string $qrId
+     * @param int $merchantId
+     * @return array
+     */
+    public function processQrPayment(int $userId, float $amount, string $qrId, int $merchantId): array;
 }

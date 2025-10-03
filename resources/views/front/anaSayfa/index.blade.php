@@ -249,12 +249,309 @@
         cursor: not-allowed;
         transform: none !important;
       }
+      
+      /* QR Payment Modal Styles */
+      .qr-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      
+      .qr-info {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .qr-merchant {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      
+      .merchant-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(255,204,0,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+      }
+      
+      .merchant-details {
+        flex: 1;
+      }
+      
+      .merchant-name {
+        font-weight: 700;
+        font-size: 18px;
+        color: var(--text);
+      }
+      
+      .merchant-category {
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      
+      .qr-amount {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(255,204,0,.1), rgba(0,58,112,.1));
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      
+      .amount-label {
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      
+      .amount-value {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--accent);
+      }
+      
+      .qr-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+      }
+      
+      .detail-row span:first-child {
+        color: var(--muted);
+      }
+      
+      .detail-row span:last-child {
+        color: var(--text);
+        font-weight: 600;
+      }
+      
+      /* Alert Styles */
+      .alert {
+        margin-bottom: 16px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        border: 1px solid;
+        position: relative;
+        z-index: 10;
+      }
+      
+      .alert-error {
+        background: linear-gradient(135deg, rgba(239,68,68,.1), rgba(220,38,38,.1));
+        border-color: var(--danger);
+        color: #fca5a5;
+      }
+      
+      .alert-success {
+        background: linear-gradient(135deg, rgba(34,197,94,.1), rgba(22,163,74,.1));
+        border-color: #22c55e;
+        color: #86efac;
+      }
+      
+      .alert-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .alert-icon {
+        font-size: 18px;
+      }
+      
+      .alert-text {
+        flex: 1;
+        font-weight: 600;
+      }
+      
+      .alert-close {
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 4px;
+        transition: .2s;
+      }
+      
+      .alert-close:hover {
+        background: rgba(255,255,255,.1);
+      }
+      
+      /* Activities List Scroll */
+      .activities-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 4px; /* Scrollbar için alan bırak */
+      }
+      
+      /* Custom Scrollbar */
+      .activities-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .activities-list::-webkit-scrollbar-track {
+        background: #0b1a33;
+        border-radius: 3px;
+      }
+      
+      .activities-list::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+        transition: background 0.2s ease;
+      }
+      
+      .activities-list::-webkit-scrollbar-thumb:hover {
+        background: var(--accent);
+      }
+      
+      /* Firefox scrollbar */
+      .activities-list {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) #0b1a33;
+      }
+      
+      /* Transaction Detail Modal */
+      .transaction-detail-content {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+      
+      .transaction-main-info {
+        text-align: center;
+        padding: 20px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      
+      .transaction-icon-large {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        font-weight: 700;
+        background: linear-gradient(135deg, rgba(255,204,0,.15), rgba(0,58,112,.15));
+        border: 2px solid var(--accent);
+      }
+      
+      .transaction-amount-large {
+        font-size: 32px;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+      
+      .transaction-title-large {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      
+      .transaction-date-large {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      
+      .transaction-details-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .transaction-detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+      
+      .transaction-detail-label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      
+      .transaction-detail-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: right;
+      }
+      
+      .split-btn {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .split-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 25px rgba(34,197,94,.3);
+      }
     </style>
   </head>
   <body>
     <canvas id="stars"></canvas>
-    <div class="container">
-      <div class="topbar">
+      <div class="container">
+        @if(session('error'))
+          <div class="alert alert-error" id="flashMessage">
+            <div class="alert-content">
+              <div class="alert-icon">❌</div>
+              <div class="alert-text">{{ session('error') }}</div>
+              <button class="alert-close" onclick="document.getElementById('flashMessage').style.display='none'">×</button>
+            </div>
+          </div>
+        @endif
+        
+        @if(session('success'))
+          <div class="alert alert-success" id="flashMessage">
+            <div class="alert-content">
+              <div class="alert-icon">✅</div>
+              <div class="alert-text">{{ session('success') }}</div>
+              <button class="alert-close" onclick="document.getElementById('flashMessage').style.display='none'">×</button>
+            </div>
+          </div>
+        @endif
+        
+        <div class="topbar">
         <div class="brand">
           <div class="brand-logo">KC</div>
           <div class="brand-title">Kampüs Cüzdan</div>
@@ -391,7 +688,74 @@
         <div class="sidebar">
           <div class="card">
             <div class="section-title">Son Hareketler</div>
-            <div class="list" id="lastActivities"></div>
+            <div class="list activities-list" id="lastActivities"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QR Kod Input Modal -->
+    <div class="modal" id="qrInputModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">QR Kod Girin</h2>
+          <button class="modal-close" id="closeQrInputModal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        
+        <form class="modal-form" id="qrInputForm">
+          <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 48px; margin-bottom: 12px;">📱</div>
+            <div style="font-size: 16px; color: var(--muted);">QR kod verisini aşağıya yapıştırın</div>
+          </div>
+          
+          <textarea 
+            id="qrDataInput" 
+            class="modal-input" 
+            placeholder='{"qr_id":"QR-12345","merchant_id":"2","amount":120.00,"currency":"TRY","ts":"2025-11-10T19:30:00Z"}'
+            rows="6"
+            required
+            style="resize: vertical; min-height: 120px; font-family: monospace; font-size: 12px;"
+          ></textarea>
+          
+          <div class="modal-buttons">
+            <button type="button" class="modal-btn modal-btn-secondary" id="cancelQrInputBtn">İptal</button>
+            <button type="submit" class="modal-btn modal-btn-primary" id="processQrBtn">Ödemeye Geç</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Transaction Detail Modal -->
+    <div class="modal" id="transactionDetailModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">İşlem Detayları</h2>
+          <button class="modal-close" id="closeTransactionModal">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+        
+        <div class="transaction-detail-content">
+          <div class="transaction-main-info">
+            <div class="transaction-icon-large" id="transactionIconLarge">₺</div>
+            <div class="transaction-amount-large" id="transactionAmountLarge">₺ 120,00</div>
+            <div class="transaction-title-large" id="transactionTitleLarge">Burger King</div>
+            <div class="transaction-date-large" id="transactionDateLarge">2 Ekim 2025, 14:30</div>
+          </div>
+          
+          <div class="transaction-details-grid" id="transactionDetailsGrid">
+            <!-- Details will be populated by JavaScript -->
+          </div>
+          
+          <div class="modal-buttons" id="transactionModalButtons">
+            <button type="button" class="modal-btn modal-btn-secondary" id="closeTransactionBtn">Kapat</button>
+            <!-- Split button will be added dynamically for payments -->
           </div>
         </div>
       </div>
@@ -520,12 +884,8 @@
         window.addEventListener('resize', resize);
         resize();
       })();
-      const fakeActivities = [
-        { title: 'Kafeterya Ödemesi', sub: '02 Ekim, 12:45', amount: -58.75, color: '#0d2142' },
-        { title: 'Bakiye Yükleme', sub: '02 Ekim, 09:15', amount: 150.00, color: '#ffcc00' },
-        { title: 'Spor Salonu', sub: '01 Ekim, 18:10', amount: -25.00, color: '#0d2142' },
-        { title: 'Arkadaştan Geldi', sub: '01 Ekim, 17:00', amount: 40.00, color: '#ffcc00' },
-      ];
+      // Gerçek transaction verilerini backend'den al
+      const recentTransactions = @json($recentTransactions);
 
       const fakeNotifIncomings = [
         { from: 'Ayşe Yılmaz', sub: 'Kantin geri ödeme', amount: 20.00 },
@@ -563,40 +923,270 @@
         return `${sign}₺ ${a.toFixed(2).replace('.', ',')}`;
       }
 
-      function createActivityItem(act){
+      function createActivityItem(transaction){
         const el = document.createElement('div');
         el.className = 'item';
+        
+        // Transaction type'a göre başlık ve ikon belirle
+        let title, icon, isPositive;
+        
+        switch(transaction.type) {
+          case 'topup':
+            title = 'Bakiye Yükleme';
+            icon = '+';
+            isPositive = true;
+            break;
+          case 'payment':
+            title = transaction.merchant ? transaction.merchant.name : 'Ödeme';
+            icon = '₺';
+            isPositive = false;
+            break;
+          case 'transfer_in':
+            title = 'Para Aldınız';
+            icon = '↓';
+            isPositive = true;
+            break;
+          case 'transfer_out':
+            title = 'Para Gönderdiniz';
+            icon = '↑';
+            isPositive = false;
+            break;
+          case 'cashback':
+            title = 'Cashback';
+            icon = '%';
+            isPositive = true;
+            break;
+          default:
+            title = 'İşlem';
+            icon = '•';
+            isPositive = transaction.amount > 0;
+        }
+        
+        // Tarihi formatla
+        const date = new Date(transaction.created_at);
+        const formattedDate = date.toLocaleDateString('tr-TR', {
+          day: 'numeric',
+          month: 'long',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        // Tutarı formatla (transfer_out ve payment negatif göster)
+        const displayAmount = (transaction.type === 'transfer_out' || transaction.type === 'payment') 
+          ? -Math.abs(transaction.amount) 
+          : Math.abs(transaction.amount);
+        
         el.innerHTML = `
           <div class="item-left">
-            <div class="item-icon" style="background:${act.amount>0?'rgba(255,204,0,.18)':'rgba(239,68,68,.12)'}; color:${act.amount>0?'#ffcc00':'#ef4444'}">${act.amount>0?'+':'-'}</div>
+            <div class="item-icon" style="background:${isPositive?'rgba(255,204,0,.18)':'rgba(239,68,68,.12)'}; color:${isPositive?'#ffcc00':'#ef4444'}">${icon}</div>
             <div>
-              <div class="item-title">${act.title}</div>
-              <div class="item-sub">${act.sub}</div>
+              <div class="item-title">${title}</div>
+              <div class="item-sub">${formattedDate}</div>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:8px;">
-            <div class="${act.amount>0?'amount-pos':'amount-neg'}">${formatAmount(act.amount)}</div>
-            <button class="share-btn" title="Arkadaşlarla paylaş">
+            <div class="${isPositive?'amount-pos':'amount-neg'}">${formatAmount(displayAmount)}</div>
+            <button class="share-btn" title="Detayları gör">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8a3 3 0 0 0-3 3c0 .35.07.68.18 1H12a5 5 0 0 0-5 5c0 .35.07.68.18 1H9a3 3 0 0 0-3-3 3 3 0 0 0 0 6 3 3 0 0 0 3-3c0-.35-.07-.68-.18-1H12a5 5 0 0 0 5-5c0-.35-.07-.68-.18-1H15a3 3 0 0 0 3-3 3 3 0 0 0 0-6Z" fill="#94a3b8"/>
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" fill="#94a3b8"/>
               </svg>
             </button>
           </div>
         `;
         
-        // Paylaşım butonu event listener
+        // Detay butonu event listener
         const shareBtn = el.querySelector('.share-btn');
         shareBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          alert(`${act.title} hareketi arkadaşlarla paylaşılacak (fake)`);
+          showTransactionDetails(transaction);
         });
         
         return el;
       }
+      
+      function showTransactionDetails(transaction) {
+        const modal = document.getElementById('transactionDetailModal');
+        const iconLarge = document.getElementById('transactionIconLarge');
+        const amountLarge = document.getElementById('transactionAmountLarge');
+        const titleLarge = document.getElementById('transactionTitleLarge');
+        const dateLarge = document.getElementById('transactionDateLarge');
+        const detailsGrid = document.getElementById('transactionDetailsGrid');
+        const modalButtons = document.getElementById('transactionModalButtons');
+        
+        // Ana bilgileri güncelle
+        let icon, title, isPositive;
+        
+        switch(transaction.type) {
+          case 'topup':
+            title = 'Bakiye Yükleme';
+            icon = '+';
+            isPositive = true;
+            break;
+          case 'payment':
+            title = transaction.merchant ? transaction.merchant.name : 'Ödeme';
+            icon = '₺';
+            isPositive = false;
+            break;
+          case 'transfer_in':
+            title = 'Para Aldınız';
+            icon = '↓';
+            isPositive = true;
+            break;
+          case 'transfer_out':
+            title = 'Para Gönderdiniz';
+            icon = '↑';
+            isPositive = false;
+            break;
+          case 'cashback':
+            title = 'Cashback';
+            icon = '%';
+            isPositive = true;
+            break;
+          default:
+            title = 'İşlem';
+            icon = '•';
+            isPositive = transaction.amount > 0;
+        }
+        
+        iconLarge.textContent = icon;
+        iconLarge.style.color = isPositive ? '#ffcc00' : '#ef4444';
+        
+        const displayAmount = (transaction.type === 'transfer_out' || transaction.type === 'payment') 
+          ? -Math.abs(transaction.amount) 
+          : Math.abs(transaction.amount);
+        
+        amountLarge.textContent = formatAmount(displayAmount);
+        amountLarge.style.color = isPositive ? '#ffcc00' : '#ef4444';
+        titleLarge.textContent = title;
+        
+        const date = new Date(transaction.created_at);
+        dateLarge.textContent = date.toLocaleDateString('tr-TR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        // Detay bilgilerini oluştur
+        detailsGrid.innerHTML = '';
+        
+        // Temel bilgiler
+        addDetailItem('İşlem Tipi', getTransactionTypeText(transaction.type));
+        addDetailItem('Para Birimi', transaction.currency);
+        addDetailItem('İşlem ID', `#${transaction.id}`);
+        
+        if (transaction.merchant) {
+          addDetailItem('Merchant', transaction.merchant.name);
+          if (transaction.merchant.category) {
+            addDetailItem('Kategori', transaction.merchant.category.name);
+          }
+        }
+        
+        // Meta bilgileri
+        if (transaction.meta) {
+          Object.entries(transaction.meta).forEach(([key, value]) => {
+            if (key !== 'recipient_ids' && key !== 'sender_id') {
+              const label = getMetaLabel(key);
+              const displayValue = typeof value === 'object' ? JSON.stringify(value) : value;
+              addDetailItem(label, displayValue);
+            }
+          });
+        }
+        
+        // Butonları güncelle
+        modalButtons.innerHTML = `
+          <button type="button" class="modal-btn modal-btn-secondary" id="closeTransactionBtn">Kapat</button>
+        `;
+        
+        // Eğer payment ise bölüş butonu ekle
+        if (transaction.type === 'payment' && transaction.merchant) {
+          modalButtons.innerHTML = `
+            <button type="button" class="modal-btn modal-btn-secondary" id="closeTransactionBtn">Kapat</button>
+            <button type="button" class="split-btn" id="splitPaymentBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16 4v4h4m-4 0L8 16m8-8L8 16m8-8v4m0-4h-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Arkadaşlarla Böl
+            </button>
+          `;
+          
+          // Bölüş butonuna event listener ekle
+          document.getElementById('splitPaymentBtn').addEventListener('click', () => {
+            // Transaction bilgilerini URL parametresi olarak gönder
+            const params = new URLSearchParams({
+              transaction_id: transaction.id,
+              merchant_name: transaction.merchant.name,
+              amount: transaction.amount,
+              date: transaction.created_at
+            });
+            window.location.href = `/arkadas-bol?${params.toString()}`;
+          });
+        }
+        
+        // Modal event listeners
+        document.getElementById('closeTransactionBtn').addEventListener('click', () => {
+          modal.classList.remove('show');
+        });
+        
+        // Modal'ı göster
+        modal.classList.add('show');
+      }
+      
+      function addDetailItem(label, value) {
+        const detailsGrid = document.getElementById('transactionDetailsGrid');
+        const item = document.createElement('div');
+        item.className = 'transaction-detail-item';
+        item.innerHTML = `
+          <span class="transaction-detail-label">${label}</span>
+          <span class="transaction-detail-value">${value}</span>
+        `;
+        detailsGrid.appendChild(item);
+      }
+      
+      function getTransactionTypeText(type) {
+        const types = {
+          'topup': 'Para Yükleme',
+          'payment': 'Ödeme',
+          'transfer_in': 'Para Alma',
+          'transfer_out': 'Para Gönderme',
+          'cashback': 'Geri Ödeme'
+        };
+        return types[type] || type;
+      }
+      
+      function getMetaLabel(key) {
+        const labels = {
+          'method': 'Yöntem',
+          'previous_balance': 'Önceki Bakiye',
+          'new_balance': 'Yeni Bakiye',
+          'qr_id': 'QR ID',
+          'payment_method': 'Ödeme Yöntemi',
+          'merchant_category': 'Merchant Kategorisi',
+          'recipient_name': 'Alıcı',
+          'sender_name': 'Gönderen',
+          'transfer_note': 'Not',
+          'cashback_percentage': 'Cashback Oranı',
+          'cashback_reason': 'Cashback Nedeni',
+          'campaign_id': 'Kampanya ID'
+        };
+        return labels[key] || key;
+      }
 
       function renderActivities(){
         lastActivitiesEl.innerHTML = '';
-        fakeActivities.forEach(a => lastActivitiesEl.appendChild(createActivityItem(a)));
+        
+        if (recentTransactions && recentTransactions.length > 0) {
+          recentTransactions.forEach(transaction => {
+            lastActivitiesEl.appendChild(createActivityItem(transaction));
+          });
+        } else {
+          // Hiç transaction yoksa bilgi mesajı göster
+          const noDataEl = document.createElement('div');
+          noDataEl.style.cssText = 'text-align:center; padding:20px; color:var(--muted); font-size:14px;';
+          noDataEl.textContent = 'Henüz işlem geçmişi bulunmuyor';
+          lastActivitiesEl.appendChild(noDataEl);
+        }
       }
 
       function createBudgetCard(category){
@@ -735,6 +1325,9 @@
       document.querySelectorAll('.quick').forEach(q=>{
         q.addEventListener('click', ()=>{
           const action = q.getAttribute('data-action');
+          if (action === 'qr') {
+            openQrInputModal();
+          }
         });
       });
 
@@ -771,22 +1364,41 @@
 
       // Modal functionality
       const loadMoneyModal = document.getElementById('loadMoneyModal');
+      const qrInputModal = document.getElementById('qrInputModal');
+      const transactionDetailModal = document.getElementById('transactionDetailModal');
       const addMoneyBtn = document.getElementById('addMoneyBtn');
       const quickLoadBtn = document.getElementById('quickLoadBtn');
       const closeModal = document.getElementById('closeModal');
+      const closeQrInputModal = document.getElementById('closeQrInputModal');
+      const closeTransactionModal = document.getElementById('closeTransactionModal');
       const cancelBtn = document.getElementById('cancelBtn');
+      const cancelQrInputBtn = document.getElementById('cancelQrInputBtn');
+      const processQrBtn = document.getElementById('processQrBtn');
+      const qrInputForm = document.getElementById('qrInputForm');
+      const qrDataInput = document.getElementById('qrDataInput');
       const loadMoneyForm = document.getElementById('loadMoneyForm');
       const amountInput = document.getElementById('amountInput');
       const submitBtn = document.getElementById('submitBtn');
       const balanceAmount = document.getElementById('balanceAmount');
 
-      // Function to open modal
+      // Function to open load money modal
       function openModal() {
         if (loadMoneyModal) {
           loadMoneyModal.classList.add('show');
           loadMoneyModal.style.display = 'flex';
           if (amountInput) {
             setTimeout(() => amountInput.focus(), 100);
+          }
+        }
+      }
+
+      // Function to open QR input modal
+      function openQrInputModal() {
+        if (qrInputModal) {
+          qrInputModal.classList.add('show');
+          qrInputModal.style.display = 'flex';
+          if (qrDataInput) {
+            setTimeout(() => qrDataInput.focus(), 100);
           }
         }
       }
@@ -822,6 +1434,17 @@
         }
       }
 
+      // Close QR input modal function
+      function closeQrInputModalFunc() {
+        if (qrInputModal) {
+          qrInputModal.classList.remove('show');
+          qrInputModal.style.display = 'none';
+        }
+        if (qrInputForm) {
+          qrInputForm.reset();
+        }
+      }
+
       if (closeModal) {
         closeModal.addEventListener('click', closeModalFunc);
       }
@@ -829,11 +1452,93 @@
         cancelBtn.addEventListener('click', closeModalFunc);
       }
 
+      // QR input modal event listeners
+      if (closeQrInputModal) {
+        closeQrInputModal.addEventListener('click', closeQrInputModalFunc);
+      }
+      if (cancelQrInputBtn) {
+        cancelQrInputBtn.addEventListener('click', closeQrInputModalFunc);
+      }
+      
+      // QR form submission
+      if (qrInputForm) {
+        qrInputForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const qrDataText = qrDataInput.value.trim();
+          if (!qrDataText) {
+            alert('Lütfen QR kod verisini girin.');
+            return;
+          }
+          
+          try {
+            // Debug için konsola yazdır
+            console.log('Raw input:', qrDataText);
+            console.log('Input length:', qrDataText.length);
+            
+            // Satır sonlarını ve fazla boşlukları temizle
+            const cleanedText = qrDataText
+              .replace(/\r?\n/g, '') // Satır sonlarını kaldır
+              .replace(/\s+/g, ' ')  // Çoklu boşlukları tek boşluğa çevir
+              .trim();               // Başındaki ve sonundaki boşlukları kaldır
+            console.log('Cleaned input:', cleanedText);
+            
+            // QR verisini parse et
+            const qrData = JSON.parse(cleanedText);
+            console.log('Parsed QR data:', qrData);
+            
+            // Gerekli alanları kontrol et
+            if (!qrData.qr_id || !qrData.merchant_id || !qrData.amount || !qrData.currency) {
+              alert('QR kod verisi eksik veya hatalı.');
+              return;
+            }
+            
+            // Merchant ID'yi kontrol et ve gerekirse dönüştür
+            if (typeof qrData.merchant_id === 'number' || /^\d+$/.test(qrData.merchant_id)) {
+              // Sadece sayı ise M- prefix'i ekle
+              qrData.merchant_id = `M-${qrData.merchant_id}`;
+            }
+            
+            console.log('Final QR data:', qrData);
+            
+            // QR verisini encode et ve ödeme sayfasına yönlendir
+            const qrString = btoa(JSON.stringify(qrData));
+            window.location.href = `/odeme-yap?qr=${encodeURIComponent(qrString)}`;
+          } catch (error) {
+            console.error('Parse error:', error);
+            alert('Geçersiz QR kod formatı. Hata: ' + error.message);
+          }
+        });
+      }
+
       // Close modal when clicking outside
       if (loadMoneyModal) {
         loadMoneyModal.addEventListener('click', (e) => {
           if (e.target === loadMoneyModal) {
             closeModalFunc();
+          }
+        });
+      }
+
+      if (qrInputModal) {
+        qrInputModal.addEventListener('click', (e) => {
+          if (e.target === qrInputModal) {
+            closeQrInputModalFunc();
+          }
+        });
+      }
+
+      // Transaction modal event listeners
+      if (closeTransactionModal) {
+        closeTransactionModal.addEventListener('click', () => {
+          transactionDetailModal.classList.remove('show');
+        });
+      }
+
+      if (transactionDetailModal) {
+        transactionDetailModal.addEventListener('click', (e) => {
+          if (e.target === transactionDetailModal) {
+            transactionDetailModal.classList.remove('show');
           }
         });
       }

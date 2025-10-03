@@ -16,6 +16,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             WalletSeeder::class,
             FriendSeeder::class,
+            CategorySeeder::class,
+            MerchantSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }
