@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             MerchantSeeder::class,
             TransactionSeeder::class,
+            SplitSeeder::class,
         ]);
     }
 }

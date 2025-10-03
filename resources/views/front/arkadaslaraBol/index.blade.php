@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Arkadaşlara Böl - Kampüs Dijital Cüzdan</title>
+    <title>Arkadaşlarla Böl - Kampüs Dijital Cüzdan</title>
     <style>
         :root { --bg:#000816; --panel:#071223; --muted:#94a3b8; --text:#e8edf6; --accent:#ffcc00; --accent-2:#003a70; --danger:#ef4444; --warning:#ffcc00; --card:#06101f; --border:#0f2747; }
         * { box-sizing: border-box; }
         html,body { margin:0; padding:0; background:var(--bg); color:var(--text); font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; }
         a { color: inherit; text-decoration: none; }
         #stars { position:fixed; inset:0; width:100%; height:100%; z-index:0; background: radial-gradient(1400px 700px at 80% -10%, rgba(0,58,112,.35), transparent 62%), radial-gradient(900px 480px at 12% 112%, rgba(10,32,64,.6), transparent 60%), linear-gradient(180deg, #000a1a 0%, #00040b 100%); }
-        .container { max-width: 1400px; margin: 0 auto; padding: 16px; position:relative; z-index:1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 16px; position:relative; z-index:1; }
 
         .header { display:flex; align-items:center; gap:12px; padding:12px 0; margin-bottom:24px; }
         .back-btn { width:40px; height:40px; border-radius:10px; background:#0b1a33; display:grid; place-items:center; cursor:pointer; border:1px solid var(--border); transition:.2s; }
@@ -128,18 +128,18 @@
         }
     </style>
 </head>
-<body>
-<div id="stars"></div>
-
-<div class="container">
+  <body>
+    <canvas id="stars"></canvas>
+    
+    <div class="container">
     <!-- Header -->
     <div class="header">
-        <button class="back-btn" onclick="history.back()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        <a href="{{ route('home') }}" class="back-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M12 19l-7-7 7-7" stroke="#ffdd33" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-        </button>
-        <h1 class="header-title">Arkadaşlara Böl</h1>
+        </a>
+        <h1 class="header-title">Arkadaşlarla Böl</h1>
     </div>
 
     <div class="split-container">
@@ -170,11 +170,17 @@
                             <path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6M12,8A4,4 0 0,0 8,12A4,4 0 0,0 12,16A4,4 0 0,0 16,12A4,4 0 0,0 12,8Z"/>
                         </svg>
                     </div>
-                    <div class="transaction-info">
-                        <div class="transaction-business" id="transactionBusiness">{{ $transactionData['merchant_name'] ?? 'Bilinmeyen İşletme' }}</div>
-                        <div class="transaction-date" id="transactionDate">{{ $transactionData['date'] ? \Carbon\Carbon::parse($transactionData['date'])->format('d F Y, H:i') : 'Tarih bilgisi yok' }}</div>
-                    </div>
-                    <div class="transaction-amount" id="transactionAmount">₺{{ number_format($transactionData['amount'] ?? 0, 2, ',', '.') }}</div>
+              <div class="transaction-info">
+                <div class="transaction-business" id="transactionBusiness">{{ $transactionData['merchant_name'] ?? 'Bilinmeyen İşletme' }}</div>
+                <div class="transaction-date" id="transactionDate">
+                  @if($transactionData['date'])
+                    {{ \Carbon\Carbon::parse($transactionData['date'])->format('d F Y, H:i') }}
+                  @else
+                    Tarih bilgisi yok
+                  @endif
+                </div>
+              </div>
+              <div class="transaction-amount" id="transactionAmount">₺{{ number_format($transactionData['amount'] ?? 0, 2, ',', '.') }}</div>
                 </div>
 
                 <div class="transaction-details">
@@ -339,7 +345,83 @@
     </div>
 </div>
 
-<script>
+    <script>
+    // Starfield animation
+    (function(){
+      const canvas = document.getElementById('stars');
+      if (!canvas) return;
+      
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+      let specialStar = null;
+      let tick = 0;
+      
+      function resize(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        generate();
+        draw();
+      }
+      
+      function generate(){
+        const count = Math.min(800, Math.floor((canvas.width*canvas.height)/4000));
+        stars = new Array(count).fill(0).map(()=>({
+          x: Math.random()*canvas.width,
+          y: Math.random()*canvas.height,
+          r: Math.random()*1.2 + 0.2,
+          a: Math.random()*0.5 + 0.25
+        }));
+        
+        specialStar = {
+          x: canvas.width * 0.9,
+          y: canvas.height * 0.85,
+          r: 2.0,
+          phase: Math.random() * Math.PI * 2
+        };
+      }
+      
+      function draw(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        tick++;
+        
+        for(const s of stars){
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(235,242,255,${s.a})`;
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+          ctx.fill();
+          
+          if(Math.random() < 0.01){
+            ctx.fillStyle = 'rgba(255,204,0,0.4)';
+            ctx.fillRect(s.x-0.5, s.y-0.5, 1, 1);
+          }
+        }
+        
+        if(specialStar){
+          const pulse = 1 + 0.5 * Math.sin(specialStar.phase + tick * 0.05);
+          const haloR = specialStar.r * (12 + pulse * 4);
+          const grad = ctx.createRadialGradient(specialStar.x, specialStar.y, 0, specialStar.x, specialStar.y, haloR);
+          grad.addColorStop(0, 'rgba(255,220,60,0.4)');
+          grad.addColorStop(0.4, 'rgba(255,204,0,0.15)');
+          grad.addColorStop(1, 'rgba(255,204,0,0.0)');
+          ctx.beginPath();
+          ctx.fillStyle = grad;
+          ctx.arc(specialStar.x, specialStar.y, haloR, 0, Math.PI*2);
+          ctx.fill();
+          
+          ctx.beginPath();
+          ctx.fillStyle = '#fff4c2';
+          ctx.arc(specialStar.x, specialStar.y, specialStar.r * (1.4 + pulse*0.15), 0, Math.PI*2);
+          ctx.fill();
+          
+          if(tick % 200 === 0){ specialStar.phase = Math.random()*Math.PI*2; }
+        }
+        requestAnimationFrame(draw);
+      }
+      
+      window.addEventListener('resize', resize);
+      resize();
+    })();
+    
     document.addEventListener('DOMContentLoaded', function() {
         // Gerçek arkadaş verisi backend'den gelir
         const friends = @json($friends);
@@ -721,7 +803,7 @@
             filterFriends();
         }
 
-        function shareBill() {
+        async function shareBill() {
             const transactionAmount = transactionData.amount || 0;
             const businessName = transactionData.merchant_name || 'Bilinmeyen İşletme';
 
@@ -730,24 +812,27 @@
                 return;
             }
 
-            // Paylaşım verilerini hazırla
+            // Paylaşım verilerini hazırla (backend API formatına uygun)
             const shareData = {
-                transaction_id: transactionData.transaction_id,
-                businessName: businessName,
-                transactionAmount: transactionAmount,
-                transactionDate: transactionData.date,
-                shareType: currentShareType,
+                transaction_id: parseInt(transactionData.transaction_id),
+                share_type: currentShareType,
                 friends: selectedFriends.map(friend => ({
-                    id: friend.id,
+                    id: parseInt(friend.id),
                     name: `${friend.name} ${friend.surname || ''}`.trim(),
                     amount: getFriendAmount(friend.id),
-                    percentage: getFriendPercentage(friend.id)
-                })),
-                yourShare: parseFloat(document.getElementById('summaryYourShare').textContent.replace('₺', ''))
+                    percentage: currentShareType === 'percentage' ? getFriendPercentage(friend.id) : null,
+                    weight: currentShareType === 'equal' ? 1.00 : (getFriendAmount(friend.id) / transactionAmount)
+                }))
             };
 
             console.log('Paylaşım verisi:', shareData);
 
+            // Loading state
+            const shareBtn = document.getElementById('shareBtn');
+            const originalText = shareBtn.textContent;
+            shareBtn.disabled = true;
+            shareBtn.textContent = 'Gönderiliyor...';
+            
             // API çağrısı yap
             try {
                 const response = await fetch('/create-split', {
@@ -758,21 +843,26 @@
                     },
                     body: JSON.stringify(shareData)
                 });
-
+                
                 const data = await response.json();
-
+                
                 if (response.ok && data.success) {
+                    shareBtn.textContent = 'Başarılı!';
                     alert(`Paylaşım başarıyla gönderildi!\n${data.splits_count} kişiye toplam ₺${data.total_amount.toFixed(2)} tutarında istek gönderildi.`);
-
+                    
                     // Ana sayfaya yönlendir
                     setTimeout(() => {
                         window.location.href = '{{ route("home") }}';
                     }, 1500);
                 } else {
+                    shareBtn.disabled = false;
+                    shareBtn.textContent = originalText;
                     alert(data.message || 'Paylaşım isteği gönderilirken hata oluştu.');
                 }
             } catch (error) {
                 console.error('Split creation error:', error);
+                shareBtn.disabled = false;
+                shareBtn.textContent = originalText;
                 alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
             }
         }
