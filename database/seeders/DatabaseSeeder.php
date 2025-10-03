@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             FriendSeeder::class,
             CategorySeeder::class,
             MerchantSeeder::class,
+            CashbackRuleSeeder::class,
             TransactionSeeder::class,
             SplitSeeder::class,
         ]);

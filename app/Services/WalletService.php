@@ -175,7 +175,7 @@ class WalletService extends BaseService implements WalletServiceInterface
             $userWallet = $this->repository->subtractBalance($userWallet->id, $amount);
             
             // Payment transaction kaydı oluştur
-            \App\Models\Transaction::create([
+            $paymentTransaction = \App\Models\Transaction::create([
                 'user_id' => $userId,
                 'merchant_id' => $merchantId,
                 'amount' => $amount,
@@ -202,6 +202,7 @@ class WalletService extends BaseService implements WalletServiceInterface
                 'amount_paid' => $amount,
                 'qr_id' => $qrId,
                 'merchant_id' => $merchantId,
+                'transaction' => $paymentTransaction,
             ];
         });
     }

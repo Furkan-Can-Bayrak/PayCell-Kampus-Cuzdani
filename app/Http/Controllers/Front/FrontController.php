@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\WalletServiceInterface;
 use App\Services\Contracts\SplitServiceInterface;
+use App\Services\Contracts\CashbackServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,7 +14,8 @@ class FrontController extends Controller
 {
     public function __construct(
         private WalletServiceInterface $walletService,
-        private SplitServiceInterface $splitService
+        private SplitServiceInterface $splitService,
+        private CashbackServiceInterface $cashbackService
     ) {}
 
     /**
@@ -328,20 +330,32 @@ class FrontController extends Controller
             // Ödeme işlemi - kullanıcının bakiyesinden düş
             $result = $this->walletService->processQrPayment($user->id, $amount, $validated['qr_id'], $merchantId);
 
+            // Cashback işlemini ayrı yap
+            $cashbackResult = $this->cashbackService->processCashback($result['transaction']);
+            
+            // Cashback uygulandıysa güncel bakiyeyi al
+            $finalBalance = $result['user_balance'];
+            if ($cashbackResult['total_cashback'] > 0) {
+                $updatedWallet = $this->walletService->getUserWallet($user->id);
+                $finalBalance = $updatedWallet->balance;
+            }
+
             \Log::info('QR payment successful', [
                 'user_id' => $user->id,
                 'merchant_id' => $merchantId,
                 'amount' => $amount,
                 'qr_id' => $validated['qr_id'],
-                'result' => $result
+                'result' => $result,
+                'cashback' => $cashbackResult
             ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Ödeme başarıyla gerçekleştirildi!',
-                'balance' => (float) $result['user_balance'],
+                'balance' => (float) $finalBalance,
                 'amount_paid' => $amount,
                 'merchant' => $merchant->name,
+                'cashback' => $cashbackResult,
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             \Log::error('QR payment validation error', [
@@ -355,13 +369,27 @@ class FrontController extends Controller
             ], 422);
         } catch (\Exception $e) {
             \Log::error('QR payment error', [
+                'user_id' => $request->user()->id ?? null,
+                'request_data' => $request->all(),
                 'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
 
+            // Geliştirme ortamında daha detaylı hata mesajı
+            $errorMessage = app()->environment('local') 
+                ? 'Ödeme işlemi sırasında bir hata oluştu: ' . $e->getMessage() . ' (Line: ' . $e->getLine() . ')'
+                : 'Ödeme işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.';
+
             return response()->json([
                 'success' => false,
-                'message' => 'Ödeme işlemi sırasında bir hata oluştu: ' . $e->getMessage(),
+                'message' => $errorMessage,
+                'debug' => app()->environment('local') ? [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => explode("\n", $e->getTraceAsString())
+                ] : null,
             ], 500);
         }
     }

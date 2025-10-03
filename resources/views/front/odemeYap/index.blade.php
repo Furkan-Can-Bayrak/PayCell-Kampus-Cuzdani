@@ -433,6 +433,26 @@
               const data = await response.json();
 
               if (response.ok && data.success) {
+                // Cashback bilgisini hazırla
+                let cashbackMessage = '';
+                if (data.cashback && data.cashback.total_cashback > 0) {
+                  cashbackMessage = `
+                    <div style="margin-top: 16px; padding: 12px; background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px;">
+                      <div style="display: flex; align-items: center; gap: 8px; color: #22c55e; font-weight: 600; margin-bottom: 8px;">
+                        🎉 Cashback Kazandınız!
+                      </div>
+                      <div style="font-size: 14px; color: var(--muted);">
+                        ₺ ${data.cashback.total_cashback.toFixed(2).replace('.', ',')} para iadesi hesabınıza eklendi
+                      </div>
+                      ${data.cashback.applied_rules.map(rule => `
+                        <div style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+                          • ${rule.rule_name}: ₺ ${rule.cashback_amount.toFixed(2).replace('.', ',')}
+                        </div>
+                      `).join('')}
+                    </div>
+                  `;
+                }
+
                 // Show success message
                 const card = document.querySelector('.card');
                 card.innerHTML = `
@@ -443,18 +463,33 @@
                     <div style="margin-top: 12px; font-size: 14px; color: var(--muted);">
                       Yeni bakiyeniz: ₺ ${data.balance.toFixed(2).replace('.', ',')}
                     </div>
+                    ${cashbackMessage}
                   </div>
                   <button onclick="window.location.href='{{ route('home') }}'" class="pay-btn">Ana Sayfaya Dön</button>
                 `;
               } else {
                 // Show error message
-                alert(data.message || 'Ödeme işlemi başarısız!');
+                let errorMsg = data.message || 'Ödeme işlemi başarısız!';
+                if (data.debug) {
+                  console.error('Debug info:', data.debug);
+                  errorMsg += '\n\nDebug: ' + data.debug.file + ':' + data.debug.line;
+                }
+                alert(errorMsg);
                 payBtn.disabled = false;
                 payBtn.textContent = 'Ödemeyi Onayla';
               }
             } catch (error) {
               console.error('Payment error:', error);
-              alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+              
+              // Daha detaylı hata mesajı
+              let errorMessage = 'Bağlantı hatası oluştu. Lütfen tekrar deneyin.';
+              if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                errorMessage = 'Sunucuya bağlanılamadı. İnternet bağlantınızı kontrol edin.';
+              } else if (error.message) {
+                errorMessage = `Hata: ${error.message}`;
+              }
+              
+              alert(errorMessage);
               payBtn.disabled = false;
               payBtn.textContent = 'Ödemeyi Onayla';
             }

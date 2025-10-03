@@ -13,7 +13,8 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Yemek & İçecek',
+            'Kafe & Restoran',
+            'Market & Gıda',
             'Alışveriş',
             'Ulaşım',
             'Eğlence',
