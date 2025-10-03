@@ -521,4 +521,42 @@ class FrontController extends Controller
             ], 500);
         }
     }
+
+    public function getCashbackInfo(): JsonResponse
+    {
+        try {
+            $user = auth()->user();
+            
+            // Aktif cashback kurallarını getir
+            $rules = \App\Models\CashbackRule::with('category')
+                ->where('is_active', true)
+                ->where('starts_at', '<=', now())
+                ->where('ends_at', '>=', now())
+                ->get();
+
+            // Kullanıcının cashback transaction'larını getir
+            $cashbackTransactions = \App\Models\Transaction::where('user_id', $user->id)
+                ->where('type', \App\Models\Transaction::TYPE_CASHBACK)
+                ->with('merchant')
+                ->orderBy('created_at', 'desc')
+                ->take(10)
+                ->get();
+
+            // Toplam cashback hesapla
+            $totalCashback = $cashbackTransactions->sum('amount');
+
+            return response()->json([
+                'success' => true,
+                'total_cashback' => $totalCashback,
+                'rules' => $rules,
+                'transactions' => $cashbackTransactions,
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Get cashback info error: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Cashback bilgileri alınırken hata oluştu.',
+            ], 500);
+        }
+    }
 }

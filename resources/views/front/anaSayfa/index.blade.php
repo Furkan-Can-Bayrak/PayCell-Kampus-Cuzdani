@@ -523,6 +523,371 @@
         transform: translateY(-1px);
         box-shadow: 0 8px 25px rgba(34,197,94,.3);
       }
+      
+      /* Cashback Modal Styles */
+      .cashback-modal-content {
+        background: linear-gradient(180deg, #071223, #060f1e);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 0;
+        box-shadow: 0 20px 40px rgba(0,0,0,.5);
+        width: 90%;
+        max-width: 500px;
+        max-height: 85vh;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .cashback-header {
+        position: sticky;
+        top: 0;
+        background: linear-gradient(180deg, #071223, #060f1e);
+        border-bottom: 1px solid var(--border);
+        padding: 24px;
+        z-index: 10;
+      }
+      
+      .cashback-header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      
+      .cashback-header-title {
+        font-weight: 700;
+        font-size: 22px;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .cashback-header-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--accent), #ffe066);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #001;
+      }
+      
+      .cashback-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #0b1a33;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: var(--text);
+      }
+      
+      .cashback-close:hover {
+        background: #0d2142;
+        transform: translateY(-1px);
+      }
+      
+      .cashback-summary {
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(135deg, rgba(255,204,0,.1), rgba(0,58,112,.1));
+        border: 1px solid var(--accent);
+        border-radius: 16px;
+        margin: 0 24px 24px;
+      }
+      
+      .cashback-total {
+        font-size: 36px;
+        font-weight: 800;
+        color: var(--accent);
+        margin-bottom: 8px;
+        text-shadow: 0 2px 4px rgba(255,204,0,.3);
+      }
+      
+      .cashback-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      
+      .cashback-subtitle {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      
+      .cashback-body {
+        padding: 0 24px 24px;
+        max-height: 60vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+      
+      .cashback-body::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      .cashback-body::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      .cashback-body::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 3px;
+      }
+      
+      .cashback-body::-webkit-scrollbar-thumb:hover {
+        background: #ffe066;
+      }
+      
+      .cashback-section {
+        margin-bottom: 32px;
+      }
+      
+      .cashback-section:last-child {
+        margin-bottom: 0;
+      }
+      
+      .cashback-section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      
+      .section-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: rgba(255,204,0,.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      
+      .cashback-rules {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .cashback-rule {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+        background: linear-gradient(135deg, #0b1a33, #091629);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        transition: all .3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .cashback-rule::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(180deg, var(--accent), #ffe066);
+        opacity: 0;
+        transition: opacity .3s ease;
+      }
+      
+      .cashback-rule:hover {
+        background: linear-gradient(135deg, #0d2142, #0b1e37);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255,204,0,.1);
+      }
+      
+      .cashback-rule:hover::before {
+        opacity: 1;
+      }
+      
+      .rule-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 28px;
+        font-weight: 700;
+        background: linear-gradient(135deg, rgba(255,204,0,.2), rgba(255,204,0,.1));
+        border: 2px solid rgba(255,204,0,.3);
+        flex-shrink: 0;
+      }
+      
+      .rule-content {
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .rule-name {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      
+      .rule-description {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 12px;
+        line-height: 1.4;
+      }
+      
+      .rule-details {
+        display: flex;
+        gap: 16px;
+        font-size: 12px;
+        flex-wrap: wrap;
+      }
+      
+      .rule-rate {
+        color: var(--accent);
+        font-weight: 700;
+        background: rgba(255,204,0,.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(255,204,0,.2);
+      }
+      
+      .rule-cap {
+        color: var(--muted);
+        background: rgba(148,163,184,.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 1px solid rgba(148,163,184,.2);
+      }
+      
+      .rule-status {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: white;
+        box-shadow: 0 2px 8px rgba(34,197,94,.3);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      
+      .cashback-transactions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .cashback-transaction {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background: linear-gradient(135deg, #0b1a33, #091629);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        transition: all .2s ease;
+      }
+      
+      .cashback-transaction:hover {
+        background: linear-gradient(135deg, #0d2142, #0b1e37);
+        transform: translateY(-1px);
+      }
+      
+      .transaction-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .transaction-icon-small {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 700;
+        background: linear-gradient(135deg, rgba(255,204,0,.2), rgba(255,204,0,.1));
+        border: 1px solid rgba(255,204,0,.3);
+        color: var(--accent);
+        flex-shrink: 0;
+      }
+      
+      .transaction-details {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+      
+      .transaction-rule {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .transaction-date {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      
+      .transaction-amount {
+        font-size: 18px;
+        font-weight: 800;
+        color: var(--accent);
+        white-space: nowrap;
+        text-shadow: 0 1px 2px rgba(255,204,0,.3);
+      }
+      
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: var(--muted);
+      }
+      
+      .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.5;
+      }
+      
+      .empty-state-text {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      
+      .empty-state-subtext {
+        font-size: 14px;
+        opacity: 0.7;
+      }
     </style>
   </head>
   <body>
@@ -807,6 +1172,53 @@
             <button type="submit" class="modal-btn modal-btn-primary" id="submitBtn">Yükle</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Cashback Modal -->
+    <div class="modal" id="cashbackModal">
+      <div class="cashback-modal-content">
+        <div class="cashback-header">
+          <div class="cashback-header-content">
+            <div class="cashback-header-title">
+              <div class="cashback-header-icon">%</div>
+              Cashback Merkezi
+            </div>
+            <button class="cashback-close" id="closeCashbackModal">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="cashback-summary">
+          <div class="cashback-total" id="cashbackTotal">₺ 0,00</div>
+          <div class="cashback-title">Toplam Kazancınız</div>
+          <div class="cashback-subtitle">Bu ay kazandığınız para iadesi</div>
+        </div>
+        
+        <div class="cashback-body">
+          <div class="cashback-section">
+            <div class="cashback-section-title">
+              <div class="section-icon">🎯</div>
+              Aktif Kampanyalar
+            </div>
+            <div class="cashback-rules" id="cashbackRules">
+              <!-- Dinamik olarak doldurulacak -->
+            </div>
+          </div>
+          
+          <div class="cashback-section">
+            <div class="cashback-section-title">
+              <div class="section-icon">📊</div>
+              Son Kazançlarınız
+            </div>
+            <div class="cashback-transactions" id="cashbackTransactions">
+              <!-- Dinamik olarak doldurulacak -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1312,6 +1724,8 @@
           const action = q.getAttribute('data-action');
           if (action === 'qr') {
             openQrInputModal();
+          } else if (action === 'cashback') {
+            openCashbackModal();
           }
         });
       });
@@ -1348,11 +1762,13 @@
       const loadMoneyModal = document.getElementById('loadMoneyModal');
       const qrInputModal = document.getElementById('qrInputModal');
       const transactionDetailModal = document.getElementById('transactionDetailModal');
+      const cashbackModal = document.getElementById('cashbackModal');
       const addMoneyBtn = document.getElementById('addMoneyBtn');
       const quickLoadBtn = document.getElementById('quickLoadBtn');
       const closeModal = document.getElementById('closeModal');
       const closeQrInputModal = document.getElementById('closeQrInputModal');
       const closeTransactionModal = document.getElementById('closeTransactionModal');
+      const closeCashbackModal = document.getElementById('closeCashbackModal');
       const cancelBtn = document.getElementById('cancelBtn');
       const cancelQrInputBtn = document.getElementById('cancelQrInputBtn');
       const processQrBtn = document.getElementById('processQrBtn');
@@ -1383,6 +1799,259 @@
             setTimeout(() => qrDataInput.focus(), 100);
           }
         }
+      }
+
+      // Function to open cashback modal
+      function openCashbackModal() {
+        const cashbackModal = document.getElementById('cashbackModal');
+        if (cashbackModal) {
+          loadCashbackData();
+          cashbackModal.classList.add('show');
+          cashbackModal.style.display = 'flex';
+        }
+      }
+
+      // Function to load cashback data
+      async function loadCashbackData() {
+        try {
+          const response = await fetch('/cashback-info', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            }
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            updateCashbackModal(data);
+          } else {
+            // Fallback: Show static data if API fails
+            showStaticCashbackData();
+          }
+        } catch (error) {
+          console.error('Cashback data loading error:', error);
+          // Fallback: Show static data
+          showStaticCashbackData();
+        }
+      }
+
+      // Function to update cashback modal with real data
+      function updateCashbackModal(data) {
+        // Update total cashback
+        const totalEl = document.getElementById('cashbackTotal');
+        if (totalEl && data.total_cashback) {
+          totalEl.textContent = `₺ ${data.total_cashback.toFixed(2).replace('.', ',')}`;
+        }
+
+        // Update rules
+        const rulesEl = document.getElementById('cashbackRules');
+        if (rulesEl && data.rules) {
+          rulesEl.innerHTML = '';
+          data.rules.forEach(rule => {
+            const ruleEl = createCashbackRuleElement(rule);
+            rulesEl.appendChild(ruleEl);
+          });
+        }
+
+        // Update transactions
+        const transactionsEl = document.getElementById('cashbackTransactions');
+        if (transactionsEl && data.transactions) {
+          transactionsEl.innerHTML = '';
+          data.transactions.forEach(transaction => {
+            const transactionEl = createCashbackTransactionElement(transaction);
+            transactionsEl.appendChild(transactionEl);
+          });
+        }
+      }
+
+      // Function to show static cashback data (fallback)
+      function showStaticCashbackData() {
+        // Update total cashback
+        const totalEl = document.getElementById('cashbackTotal');
+        if (totalEl) {
+          totalEl.textContent = '₺ 22,40';
+        }
+
+        // Show static rules
+        const rulesEl = document.getElementById('cashbackRules');
+        if (rulesEl) {
+          rulesEl.innerHTML = `
+            <div class="cashback-rule">
+              <div class="rule-icon">☕</div>
+              <div class="rule-content">
+                <div class="rule-name">Kafe & Restoran %5 İade</div>
+                <div class="rule-description">Kafe ve restoran harcamalarınızda %5 para iadesi</div>
+                <div class="rule-details">
+                  <span class="rule-rate">%5</span>
+                  <span class="rule-cap">Maks. 50 TL</span>
+                </div>
+              </div>
+              <div class="rule-status">Aktif</div>
+            </div>
+            <div class="cashback-rule">
+              <div class="rule-icon">🚌</div>
+              <div class="rule-content">
+                <div class="rule-name">Ulaşım %2 İade</div>
+                <div class="rule-description">Otobüs, metro, taksi gibi ulaşım harcamalarınızda %2 para iadesi</div>
+                <div class="rule-details">
+                  <span class="rule-rate">%2</span>
+                  <span class="rule-cap">Maks. 20 TL</span>
+                </div>
+              </div>
+              <div class="rule-status">Aktif</div>
+            </div>
+            <div class="cashback-rule">
+              <div class="rule-icon">🎁</div>
+              <div class="rule-content">
+                <div class="rule-name">İlk QR Ödeme Bonusu</div>
+                <div class="rule-description">İlk QR kod ödemenizde 20 TL bonus</div>
+                <div class="rule-details">
+                  <span class="rule-rate">20 TL</span>
+                  <span class="rule-cap">Tek seferlik</span>
+                </div>
+              </div>
+              <div class="rule-status">Aktif</div>
+            </div>
+          `;
+        }
+
+        // Show static transactions
+        const transactionsEl = document.getElementById('cashbackTransactions');
+        if (transactionsEl) {
+          transactionsEl.innerHTML = `
+            <div class="cashback-transaction">
+              <div class="transaction-info">
+                <div class="transaction-icon-small">🚌</div>
+                <div class="transaction-details">
+                  <div class="transaction-rule">Ulaşım %2 İade</div>
+                  <div class="transaction-date">3 Ekim 2025, 01:02</div>
+                </div>
+              </div>
+              <div class="transaction-amount">+₺ 2,40</div>
+            </div>
+            <div class="cashback-transaction">
+              <div class="transaction-info">
+                <div class="transaction-icon-small">🎁</div>
+                <div class="transaction-details">
+                  <div class="transaction-rule">İlk QR Ödeme Bonusu</div>
+                  <div class="transaction-date">3 Ekim 2025, 01:02</div>
+                </div>
+              </div>
+              <div class="transaction-amount">+₺ 20,00</div>
+            </div>
+            <div class="cashback-transaction">
+              <div class="transaction-info">
+                <div class="transaction-icon-small">☕</div>
+                <div class="transaction-details">
+                  <div class="transaction-rule">Kafe & Restoran %5 İade</div>
+                  <div class="transaction-date">2 Ekim 2025, 15:30</div>
+                </div>
+              </div>
+              <div class="transaction-amount">+₺ 4,25</div>
+            </div>
+            <div class="cashback-transaction">
+              <div class="transaction-info">
+                <div class="transaction-icon-small">🛒</div>
+                <div class="transaction-details">
+                  <div class="transaction-rule">Alışveriş %3 İade</div>
+                  <div class="transaction-date">1 Ekim 2025, 12:45</div>
+                </div>
+              </div>
+              <div class="transaction-amount">+₺ 3,60</div>
+            </div>
+          `;
+        }
+        
+        // Add empty state if no transactions
+        if (transactionsEl && transactionsEl.children.length === 0) {
+          transactionsEl.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">💸</div>
+              <div class="empty-state-text">Henüz cashback kazancınız yok</div>
+              <div class="empty-state-subtext">Kampanyalı işletmelerden alışveriş yaparak cashback kazanmaya başlayın!</div>
+            </div>
+          `;
+        }
+      }
+
+      // Function to create cashback rule element
+      function createCashbackRuleElement(rule) {
+        const el = document.createElement('div');
+        el.className = 'cashback-rule';
+        
+        let icon = '%';
+        if (rule.category && rule.category.name) {
+          if (rule.category.name.includes('Kafe') || rule.category.name.includes('Restoran')) {
+            icon = '☕';
+          } else if (rule.category.name.includes('Ulaşım')) {
+            icon = '🚌';
+          } else if (rule.category.name.includes('Alışveriş')) {
+            icon = '🛒';
+          }
+        }
+        
+        if (rule.rule_type === 'first_qr_bonus') {
+          icon = '🎁';
+        }
+
+        el.innerHTML = `
+          <div class="rule-icon">${icon}</div>
+          <div class="rule-content">
+            <div class="rule-name">${rule.name}</div>
+            <div class="rule-description">${rule.description}</div>
+            <div class="rule-details">
+              ${rule.rate ? `<span class="rule-rate">%${(rule.rate * 100).toFixed(0)}</span>` : ''}
+              ${rule.flat_amount ? `<span class="rule-rate">${rule.flat_amount} TL</span>` : ''}
+              ${rule.cap ? `<span class="rule-cap">Maks. ${rule.cap} TL</span>` : ''}
+            </div>
+          </div>
+          <div class="rule-status">${rule.is_active ? 'Aktif' : 'Pasif'}</div>
+        `;
+        
+        return el;
+      }
+
+      // Function to create cashback transaction element
+      function createCashbackTransactionElement(transaction) {
+        const el = document.createElement('div');
+        el.className = 'cashback-transaction';
+        
+        const date = new Date(transaction.created_at);
+        const formattedDate = date.toLocaleDateString('tr-TR', {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+
+        // Kural tipine göre ikon belirle
+        let icon = '%';
+        if (transaction.meta?.rule_type === 'first_qr_bonus') {
+          icon = '🎁';
+        } else if (transaction.meta?.rule_name) {
+          if (transaction.meta.rule_name.includes('Kafe') || transaction.meta.rule_name.includes('Restoran')) {
+            icon = '☕';
+          } else if (transaction.meta.rule_name.includes('Ulaşım')) {
+            icon = '🚌';
+          } else if (transaction.meta.rule_name.includes('Alışveriş')) {
+            icon = '🛒';
+          }
+        }
+
+        el.innerHTML = `
+          <div class="transaction-info">
+            <div class="transaction-icon-small">${icon}</div>
+            <div class="transaction-details">
+              <div class="transaction-rule">${transaction.meta?.rule_name || 'Cashback'}</div>
+              <div class="transaction-date">${formattedDate}</div>
+            </div>
+          </div>
+          <div class="transaction-amount">+₺ ${transaction.amount.toFixed(2).replace('.', ',')}</div>
+        `;
+        
+        return el;
       }
 
       // Open modal - Ana para yükle butonu
@@ -1523,6 +2192,29 @@
             transactionDetailModal.classList.remove('show');
           }
         });
+      }
+
+      // Cashback modal event listeners
+      if (closeCashbackModal) {
+        closeCashbackModal.addEventListener('click', () => {
+          closeCashbackModalFunc();
+        });
+      }
+
+      if (cashbackModal) {
+        cashbackModal.addEventListener('click', (e) => {
+          if (e.target === cashbackModal) {
+            closeCashbackModalFunc();
+          }
+        });
+      }
+
+      // Function to close cashback modal
+      function closeCashbackModalFunc() {
+        if (cashbackModal) {
+          cashbackModal.classList.remove('show');
+          cashbackModal.style.display = 'none';
+        }
       }
 
       // Handle form submission

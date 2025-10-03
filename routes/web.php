@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/create-split', [FrontController::class, 'createSplit'])->name('create-split');
     Route::post('/accept-split', [FrontController::class, 'acceptSplit'])->name('accept-split');
     Route::post('/reject-split', [FrontController::class, 'rejectSplit'])->name('reject-split');
+    Route::get('/cashback-info', [FrontController::class, 'getCashbackInfo'])->name('cashback-info');
 });
 
 // Auth routes

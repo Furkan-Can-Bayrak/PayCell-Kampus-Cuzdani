@@ -15,11 +15,11 @@ class WalletSeeder extends Seeder
     {
         // Tüm kullanıcılar için wallet oluştur
         $users = User::all();
-        
+
         foreach ($users as $user) {
             Wallet::firstOrCreate(
                 ['user_id' => $user->id],
-                ['balance' => rand(0, 5000) / 100] // 0-50 TL arası rastgele bakiye
+                ['balance' => 10] // 0-50 TL arası rastgele bakiye
             );
         }
     }

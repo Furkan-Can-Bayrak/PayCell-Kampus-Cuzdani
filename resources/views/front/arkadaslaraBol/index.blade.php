@@ -105,6 +105,35 @@
         .empty-icon { font-size:32px; margin-bottom:12px; }
         .empty-text { font-size:14px; }
 
+        /* Modal Styles */
+        .modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; z-index:1000; }
+        .modal.show { display:flex; align-items:center; justify-content:center; }
+        .modal-content { background:linear-gradient(180deg, #071223, #060f1e); border:1px solid var(--border); border-radius:16px; padding:24px; max-width:400px; width:90%; box-shadow:0 20px 40px rgba(0,0,0,0.5); }
+        .modal-header { text-align:center; margin-bottom:20px; }
+        .modal-title { font-size:20px; font-weight:700; color:var(--accent); margin-bottom:8px; }
+        .modal-subtitle { font-size:14px; color:var(--muted); }
+        .modal-body { margin-bottom:20px; }
+        .modal-text { font-size:14px; line-height:1.5; color:var(--text); margin-bottom:12px; }
+        .modal-amount { font-size:18px; font-weight:700; color:var(--accent); text-align:center; margin:16px 0; }
+        .modal-friends { margin-top:16px; }
+        .modal-friend-item { display:flex; align-items:center; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); }
+        .modal-friend-item:last-child { border-bottom:none; }
+        .modal-friend-avatar { width:32px; height:32px; border-radius:999px; background:#1f2937; display:flex; align-items:center; justify-content:center; font-size:12px; color:#ffdd33; font-weight:700; }
+        .modal-friend-name { flex:1; font-size:13px; font-weight:600; }
+        .modal-friend-amount { font-size:13px; color:var(--accent); font-weight:600; }
+        .modal-footer { display:flex; gap:12px; justify-content:center; }
+        .modal-btn { padding:12px 24px; border:none; border-radius:8px; font-weight:600; cursor:pointer; transition:.2s; }
+        .modal-btn-primary { background:linear-gradient(135deg, var(--accent), #ffe066); color:#001; }
+        .modal-btn-primary:hover { transform:translateY(-1px); }
+        .modal-btn-secondary { background:#0b1a33; color:var(--text); border:1px solid var(--border); }
+        .modal-btn-secondary:hover { background:#0d2142; }
+        .success-icon { width:64px; height:64px; border-radius:999px; background:rgba(16,185,129,0.2); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+        .success-icon svg { width:32px; height:32px; color:#10b981; }
+        .loading-spinner { width:32px; height:32px; border:3px solid var(--border); border-top:3px solid var(--accent); border-radius:999px; animation:spin 1s linear infinite; margin:0 auto 16px; }
+        @keyframes spin { 0% { transform:rotate(0deg); } 100% { transform:rotate(360deg); } }
+        .loading-text { text-align:center; font-size:16px; font-weight:600; color:var(--accent); margin-bottom:8px; }
+        .loading-subtext { text-align:center; font-size:13px; color:var(--muted); }
+
         .transaction-detail { margin-bottom:20px; }
         .transaction-header { display:flex; align-items:center; gap:12px; padding:16px; background:#0b1a33; border-radius:12px; margin-bottom:16px; }
         .transaction-icon { width:48px; height:48px; border-radius:12px; background:rgba(255,204,0,.18); display:grid; place-items:center; color:var(--accent); }
@@ -345,6 +374,77 @@
     </div>
 </div>
 
+    <!-- Modals -->
+    <!-- Loading Modal -->
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">Paylaşım Gönderiliyor</div>
+                <div class="loading-subtext">Lütfen bekleyin...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9,20.42L2.79,14.21L5.62,11.38L9,14.77L18.88,4.88L21.71,7.71L9,20.42Z"/>
+                    </svg>
+                </div>
+                <div class="modal-title">Paylaşım Başarılı!</div>
+                <div class="modal-subtitle">Arkadaşlarınıza istek gönderildi</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-text" id="successMessage">
+                    Paylaşım başarıyla gönderildi!
+                </div>
+                <div class="modal-amount" id="successAmount">
+                    ₺0.00
+                </div>
+                <div class="modal-friends" id="successFriends">
+                    <!-- Dinamik olarak doldurulacak -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-primary" id="closeSuccessBtn">
+                    Ana Sayfaya Dön
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon" style="background:rgba(239,68,68,0.2);">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="color:#ef4444;">
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/>
+                    </svg>
+                </div>
+                <div class="modal-title">Hata Oluştu</div>
+                <div class="modal-subtitle">Paylaşım gönderilemedi</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-text" id="errorMessage">
+                    Bir hata oluştu. Lütfen tekrar deneyin.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="modal-btn modal-btn-secondary" id="closeErrorBtn">
+                    Kapat
+                </button>
+                <button type="button" class="modal-btn modal-btn-primary" id="retryBtn">
+                    Tekrar Dene
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
     // Starfield animation
     (function(){
@@ -447,6 +547,19 @@
         });
         document.getElementById('resetBtn').addEventListener('click', resetForm);
         document.getElementById('shareBtn').addEventListener('click', shareBill);
+
+        // Modal event listeners
+        document.getElementById('closeSuccessBtn').addEventListener('click', closeSuccessModal);
+        document.getElementById('closeErrorBtn').addEventListener('click', closeErrorModal);
+        document.getElementById('retryBtn').addEventListener('click', retryShare);
+
+        // Modal dışına tıklayınca kapatma
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSuccessModal();
+        });
+        document.getElementById('errorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeErrorModal();
+        });
 
         function loadFriends() {
             const friendList = document.getElementById('friendsList');
@@ -803,12 +916,74 @@
             filterFriends();
         }
 
+        // Modal Functions
+        function showLoadingModal() {
+            document.getElementById('loadingModal').classList.add('show');
+        }
+
+        function hideLoadingModal() {
+            document.getElementById('loadingModal').classList.remove('show');
+        }
+
+        function showSuccessModal(data) {
+            const transactionAmount = transactionData.amount || 0;
+            const totalAmount = data.total_amount || 0;
+            const splitsCount = data.splits_count || 0;
+
+            // Success message güncelle
+            document.getElementById('successMessage').textContent = 
+                `${splitsCount} kişiye toplam ₺${totalAmount.toFixed(2)} tutarında istek gönderildi.`;
+
+            // Total amount göster
+            document.getElementById('successAmount').textContent = `₺${totalAmount.toFixed(2)}`;
+
+            // Seçilen arkadaşları göster
+            const friendsContainer = document.getElementById('successFriends');
+            friendsContainer.innerHTML = '';
+
+            selectedFriends.forEach(friend => {
+                const amount = getFriendAmount(friend.id);
+                const friendItem = document.createElement('div');
+                friendItem.className = 'modal-friend-item';
+                friendItem.innerHTML = `
+                    <div class="modal-friend-avatar">${friend.name.charAt(0)}${friend.surname ? friend.surname.charAt(0) : ''}</div>
+                    <div class="modal-friend-name">${friend.name} ${friend.surname || ''}</div>
+                    <div class="modal-friend-amount">₺${amount.toFixed(2)}</div>
+                `;
+                friendsContainer.appendChild(friendItem);
+            });
+
+            document.getElementById('successModal').classList.add('show');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('show');
+            // Ana sayfaya yönlendir
+            setTimeout(() => {
+                window.location.href = '{{ route("home") }}';
+            }, 300);
+        }
+
+        function showErrorModal(message) {
+            document.getElementById('errorMessage').textContent = message || 'Bir hata oluştu. Lütfen tekrar deneyin.';
+            document.getElementById('errorModal').classList.add('show');
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.remove('show');
+        }
+
+        function retryShare() {
+            closeErrorModal();
+            shareBill();
+        }
+
         async function shareBill() {
             const transactionAmount = transactionData.amount || 0;
             const businessName = transactionData.merchant_name || 'Bilinmeyen İşletme';
 
             if (selectedFriends.length === 0) {
-                alert('Lütfen en az bir arkadaş seçin.');
+                showErrorModal('Lütfen en az bir arkadaş seçin.');
                 return;
             }
 
@@ -833,6 +1008,9 @@
             shareBtn.disabled = true;
             shareBtn.textContent = 'Gönderiliyor...';
             
+            // Loading modal göster
+            showLoadingModal();
+            
             // API çağrısı yap
             try {
                 const response = await fetch('/create-split', {
@@ -846,24 +1024,24 @@
                 
                 const data = await response.json();
                 
+                // Loading modal'ı kapat
+                hideLoadingModal();
+                
                 if (response.ok && data.success) {
                     shareBtn.textContent = 'Başarılı!';
-                    alert(`Paylaşım başarıyla gönderildi!\n${data.splits_count} kişiye toplam ₺${data.total_amount.toFixed(2)} tutarında istek gönderildi.`);
-                    
-                    // Ana sayfaya yönlendir
-                    setTimeout(() => {
-                        window.location.href = '{{ route("home") }}';
-                    }, 1500);
+                    // Success modal göster
+                    showSuccessModal(data);
                 } else {
                     shareBtn.disabled = false;
                     shareBtn.textContent = originalText;
-                    alert(data.message || 'Paylaşım isteği gönderilirken hata oluştu.');
+                    showErrorModal(data.message || 'Paylaşım isteği gönderilirken hata oluştu.');
                 }
             } catch (error) {
                 console.error('Split creation error:', error);
+                hideLoadingModal();
                 shareBtn.disabled = false;
                 shareBtn.textContent = originalText;
-                alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+                showErrorModal('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
             }
         }
 
