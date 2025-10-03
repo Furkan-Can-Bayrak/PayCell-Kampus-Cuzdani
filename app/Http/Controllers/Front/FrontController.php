@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Services\Contracts\WalletServiceInterface;
+use App\Services\Contracts\SplitServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -11,7 +12,8 @@ use Illuminate\View\View;
 class FrontController extends Controller
 {
     public function __construct(
-        private WalletServiceInterface $walletService
+        private WalletServiceInterface $walletService,
+        private SplitServiceInterface $splitService
     ) {}
 
     /**
@@ -23,15 +25,18 @@ class FrontController extends Controller
     {
         $user = auth()->user();
         $wallet = $this->walletService->getUserWallet($user->id);
-
+        
         // Son 20 transaction'ı getir (scroll için daha fazla veri)
         $recentTransactions = $user->transactions()
             ->with('merchant')
             ->latest()
             ->take(20)
             ->get();
-
-        return view('front.anaSayfa.index', compact('wallet', 'recentTransactions'));
+        
+        // Pending split isteklerini getir
+        $pendingSplits = $this->splitService->getUserPendingSplits($user->id);
+        
+        return view('front.anaSayfa.index', compact('wallet', 'recentTransactions', 'pendingSplits'));
     }
 
     /**
@@ -357,6 +362,134 @@ class FrontController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Ödeme işlemi sırasında bir hata oluştu: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Split isteği oluşturur
+     */
+    public function createSplit(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'transaction_id' => 'required|integer|exists:transactions,id',
+                'friends' => 'required|array|min:1',
+                'friends.*.id' => 'required|integer|exists:users,id',
+                'friends.*.name' => 'required|string',
+                'friends.*.amount' => 'required|numeric|min:0.01',
+                'friends.*.percentage' => 'nullable|numeric|min:0|max:100',
+                'friends.*.weight' => 'nullable|numeric|min:0.01',
+                'share_type' => 'required|string|in:equal,percentage,custom',
+            ]);
+
+            $user = $request->user();
+            
+            $splits = $this->splitService->createSplitRequest(
+                $validated['transaction_id'],
+                $user->id,
+                $validated['friends'],
+                $validated['share_type']
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bölüşme istekleri başarıyla gönderildi!',
+                'splits_count' => $splits->count(),
+                'total_amount' => $splits->sum('share_amount'),
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Geçersiz veri.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Split creation error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Bölüşme isteği oluşturulurken bir hata oluştu: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Split isteğini kabul eder
+     */
+    public function acceptSplit(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'split_id' => 'required|integer|exists:splits,id',
+            ]);
+
+            $user = $request->user();
+            
+            $result = $this->splitService->acceptSplit($validated['split_id'], $user->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bölüşme isteği kabul edildi ve ödeme gerçekleştirildi!',
+                'your_new_balance' => $result['user_balance'],
+                'transferred_amount' => $result['transferred_amount'],
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Geçersiz veri.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Split accept error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Bölüşme isteği kabul edilirken bir hata oluştu: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Split isteğini reddeder
+     */
+    public function rejectSplit(Request $request): JsonResponse
+    {
+        try {
+            $validated = $request->validate([
+                'split_id' => 'required|integer|exists:splits,id',
+            ]);
+
+            $user = $request->user();
+            
+            $split = $this->splitService->rejectSplit($validated['split_id'], $user->id);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bölüşme isteği reddedildi.',
+                'split_id' => $split->id,
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Geçersiz veri.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Split reject error', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Bölüşme isteği reddedilirken bir hata oluştu: ' . $e->getMessage(),
             ], 500);
         }
     }

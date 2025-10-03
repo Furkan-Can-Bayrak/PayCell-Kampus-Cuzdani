@@ -28,6 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/load-money', [FrontController::class, 'loadMoney'])->name('load-money');
     Route::post('/send-money', [FrontController::class, 'sendMoney'])->name('send-money');
     Route::post('/process-qr-payment', [FrontController::class, 'processQrPayment'])->name('process-qr-payment');
+    Route::post('/create-split', [FrontController::class, 'createSplit'])->name('create-split');
+    Route::post('/accept-split', [FrontController::class, 'acceptSplit'])->name('accept-split');
+    Route::post('/reject-split', [FrontController::class, 'rejectSplit'])->name('reject-split');
 });
 
 // Auth routes

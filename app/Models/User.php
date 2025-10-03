@@ -98,4 +98,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    // Split ilişkileri
+    public function splitRequests()
+    {
+        return $this->hasMany(Split::class, 'requester_id');
+    }
+
+    public function splitInvitations()
+    {
+        return $this->hasMany(Split::class, 'user_id');
+    }
+
+    public function pendingSplitInvitations()
+    {
+        return $this->splitInvitations()->pending();
+    }
 }

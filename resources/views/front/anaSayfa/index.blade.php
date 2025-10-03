@@ -400,7 +400,7 @@
       
       /* Activities List Scroll */
       .activities-list {
-        max-height: 400px;
+        max-height: 500px;
         overflow-y: auto;
         padding-right: 4px; /* Scrollbar için alan bırak */
       }
@@ -578,41 +578,6 @@
               </div>
             </div>
             <div class="profile-menu">
-              <div class="profile-item" data-action="profile">
-                <div class="profile-icon">👤</div>
-                <div class="profile-text">
-                  <div class="profile-title">Profil Ayarları</div>
-                  <div class="profile-desc">Kişisel bilgilerini düzenle</div>
-                </div>
-              </div>
-              <div class="profile-item" data-action="security">
-                <div class="profile-icon">🔒</div>
-                <div class="profile-text">
-                  <div class="profile-title">Güvenlik</div>
-                  <div class="profile-desc">Şifre ve güvenlik ayarları</div>
-                </div>
-              </div>
-              <div class="profile-item" data-action="notifications">
-                <div class="profile-icon">🔔</div>
-                <div class="profile-text">
-                  <div class="profile-title">Bildirimler</div>
-                  <div class="profile-desc">Bildirim tercihlerini yönet</div>
-                </div>
-              </div>
-              <div class="profile-item" data-action="privacy">
-                <div class="profile-icon">🛡️</div>
-                <div class="profile-text">
-                  <div class="profile-title">Gizlilik</div>
-                  <div class="profile-desc">Gizlilik ve veri ayarları</div>
-                </div>
-              </div>
-              <div class="profile-item" data-action="help">
-                <div class="profile-icon">❓</div>
-                <div class="profile-text">
-                  <div class="profile-title">Yardım</div>
-                  <div class="profile-desc">SSS ve destek</div>
-                </div>
-              </div>
               <div class="profile-item" data-action="logout">
                 <div class="profile-icon">🚪</div>
                 <div class="profile-text">
@@ -626,11 +591,9 @@
           <div class="notif-panel" id="notifPanel">
             <div class="notif-header">
               <div style="font-weight:700">Bildirimler</div>
-              <span class="chip" id="notifChip">3 yeni</span>
+              <span class="chip" id="notifChip">2 yeni</span>
             </div>
-            <div class="section-title">Gelen Para Hareketleri</div>
-            <div class="list" id="notifIncomings"></div>
-            <div class="section-title" style="margin-top:14px">Paylaşım İstekleri</div>
+            <div class="section-title">Paylaşım İstekleri</div>
             <div class="list" id="notifShares"></div>
           </div>
         </div>
@@ -886,18 +849,9 @@
       })();
       // Gerçek transaction verilerini backend'den al
       const recentTransactions = @json($recentTransactions);
-
-      const fakeNotifIncomings = [
-        { from: 'Ayşe Yılmaz', sub: 'Kantin geri ödeme', amount: 20.00 },
-        { from: 'Burs Ödemesi', sub: 'Ekim ödemesi', amount: 500.00 },
-      ];
-
-      const fakeNotifRequests = [];
-
-      const fakeNotifShares = [
-        { from: 'Zeynep Kaya', sub: 'Kafeterya hesabını paylaşmak istiyor', total: 72.50, yourPart: 24.17 },
-        { from: 'Can Yıldız', sub: 'Spor salonu üyeliği paylaşımı', total: 120.00, yourPart: 40.00 },
-      ];
+      
+      // Gerçek pending split verilerini backend'den al
+      const pendingSplits = @json($pendingSplits);
 
       const budgetCategories = [
         { id: 'market', name: 'Market', icon: '🛒', spent: 245.50, limit: 500.00, color: 'market' },
@@ -907,8 +861,6 @@
       ];
 
       const lastActivitiesEl = document.getElementById('lastActivities');
-      const notifIncomingsEl = document.getElementById('notifIncomings');
-      const notifRequestsEl = null;
       const notifSharesEl = document.getElementById('notifShares');
       const notifBtn = document.getElementById('notifBtn');
       const notifPanel = document.getElementById('notifPanel');
@@ -1255,52 +1207,101 @@
         budgetGrid.appendChild(createAddCategoryCard());
       }
 
-      function createNotifIncoming(n){
-        const el = document.createElement('div');
-        el.className = 'item';
-        el.innerHTML = `
-          <div class="item-left">
-            <div class="item-icon" style="background:rgba(255,204,0,.18); color:#ffcc00">₺</div>
-            <div>
-              <div class="item-title">${n.from}</div>
-              <div class="item-sub">${n.sub}</div>
-            </div>
-          </div>
-          <div class="amount-pos">${formatAmount(n.amount)}</div>
-        `;
-        return el;
-      }
 
 
-      function createNotifShare(n){
+      function createNotifShare(split){
         const el = document.createElement('div');
         el.className = 'item';
+        
+        const merchantName = split.transaction?.merchant?.name || split.meta?.merchant_name || 'Bilinmeyen İşletme';
+        const requesterName = split.requester?.name + ' ' + (split.requester?.surname || '');
+        
         el.innerHTML = `
           <div class="item-left">
             <div class="item-icon" style="background:rgba(255,204,0,.18); color:#ffcc00">⇄</div>
             <div>
-              <div class="item-title">${n.from}</div>
-              <div class="item-sub">${n.sub} • Toplam: ${formatAmount(n.total)} • Payın: ${formatAmount(n.yourPart)}</div>
+              <div class="item-title">${requesterName}</div>
+              <div class="item-sub">${merchantName} hesabını paylaşmak istiyor • Payın: ${formatAmount(split.share_amount)}</div>
             </div>
           </div>
           <div class="actions">
-            <button class="btn">Detay</button>
-            <button class="btn btn-primary accept">Kabul</button>
-            <button class="btn btn-danger reject">Reddet</button>
+            <button class="btn btn-primary accept" data-split-id="${split.id}">Kabul</button>
+            <button class="btn btn-danger reject" data-split-id="${split.id}">Reddet</button>
           </div>
         `;
-        el.querySelector('.accept').addEventListener('click', ()=>{ el.style.opacity=.5; });
-        el.querySelector('.reject').addEventListener('click', ()=>{ el.style.opacity=.5; });
+        
+        // Accept button event
+        el.querySelector('.accept').addEventListener('click', async (e) => {
+          const splitId = e.target.dataset.splitId;
+          await handleSplitAction(splitId, 'accept', el);
+        });
+        
+        // Reject button event
+        el.querySelector('.reject').addEventListener('click', async (e) => {
+          const splitId = e.target.dataset.splitId;
+          await handleSplitAction(splitId, 'reject', el);
+        });
+        
         return el;
+      }
+      
+      async function handleSplitAction(splitId, action, element) {
+        try {
+          element.style.opacity = 0.5;
+          
+          const endpoint = action === 'accept' ? '/accept-split' : '/reject-split';
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            },
+            body: JSON.stringify({ split_id: parseInt(splitId) })
+          });
+          
+          const data = await response.json();
+          
+          if (response.ok && data.success) {
+            // Success message
+            alert(data.message);
+            
+            // Update balance if accepted
+            if (action === 'accept' && data.your_new_balance) {
+              const balanceEl = document.getElementById('balanceAmount');
+              if (balanceEl) {
+                balanceEl.textContent = `₺ ${data.your_new_balance.toFixed(2).replace('.', ',')}`;
+              }
+            }
+            
+            // Remove the notification item
+            element.remove();
+            
+            // Update notification count
+            updateNotificationCount();
+          } else {
+            alert(data.message || `Bölüşme isteği ${action === 'accept' ? 'kabul edilirken' : 'reddedilirken'} hata oluştu.`);
+            element.style.opacity = 1;
+          }
+        } catch (error) {
+          console.error('Split action error:', error);
+          alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+          element.style.opacity = 1;
+        }
       }
 
       function renderNotifications(){
-        notifIncomingsEl.innerHTML = '';
-        fakeNotifIncomings.forEach(n => notifIncomingsEl.appendChild(createNotifIncoming(n)));
-        fakeNotifShares.forEach(n => notifSharesEl.appendChild(createNotifShare(n)));
-        const total = fakeNotifIncomings.length + fakeNotifShares.length;
+        if (pendingSplits && pendingSplits.length > 0) {
+          pendingSplits.forEach(split => notifSharesEl.appendChild(createNotifShare(split)));
+        }
+        const total = pendingSplits ? pendingSplits.length : 0;
         notifCount.textContent = total;
         notifChip.textContent = `${total} yeni`;
+      }
+      
+      function updateNotificationCount() {
+        const remainingItems = notifSharesEl.children.length;
+        notifCount.textContent = remainingItems;
+        notifChip.textContent = `${remainingItems} yeni`;
       }
 
       notifBtn.addEventListener('click', (e)=>{
@@ -1336,27 +1337,24 @@
       document.querySelectorAll('.profile-item').forEach(item=>{
         item.addEventListener('click', ()=>{
           const action = item.getAttribute('data-action');
-          switch(action) {
-            case 'profile':
-              alert('Profil Ayarları sayfası (fake)');
-              break;
-            case 'security':
-              alert('Güvenlik ve Şifre ayarları sayfası (fake)');
-              break;
-            case 'notifications':
-              alert('Bildirim tercihleri sayfası (fake)');
-              break;
-            case 'privacy':
-              alert('Gizlilik ayarları sayfası (fake)');
-              break;
-            case 'help':
-              alert('Yardım ve Destek sayfası (fake)');
-              break;
-            case 'logout':
-              if(confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
-                alert('Çıkış yapıldı (fake)');
-              }
-              break;
+          if (action === 'logout') {
+            if(confirm('Çıkış yapmak istediğinizden emin misiniz?')) {
+              // POST method ile logout formu oluştur ve gönder
+              const form = document.createElement('form');
+              form.method = 'POST';
+              form.action = '/auth/logout';
+              
+              // CSRF token ekle
+              const csrfToken = document.createElement('input');
+              csrfToken.type = 'hidden';
+              csrfToken.name = '_token';
+              csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+              form.appendChild(csrfToken);
+              
+              // Formu body'ye ekle ve gönder
+              document.body.appendChild(form);
+              form.submit();
+            }
           }
           profilePanel.style.display = 'none';
         });

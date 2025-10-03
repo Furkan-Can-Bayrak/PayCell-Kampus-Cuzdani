@@ -70,4 +70,10 @@ class Transaction extends Model
     {
         return number_format($this->amount, 2, ',', '.') . ' ' . $this->currency;
     }
+
+    // Split ilişkisi
+    public function splits()
+    {
+        return $this->hasMany(Split::class);
+    }
 }

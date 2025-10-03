@@ -54,6 +54,20 @@ class WalletService extends BaseService implements WalletServiceInterface
     }
 
     /**
+     * Cüzdan bakiyesini azaltır
+     *
+     * @param int $walletId
+     * @param float $amount
+     * @return Wallet
+     */
+    public function subtractBalance(int $walletId, float $amount): Wallet
+    {
+        return DB::transaction(function () use ($walletId, $amount) {
+            return $this->repository->subtractBalance($walletId, $amount);
+        });
+    }
+
+    /**
      * Kullanıcıya para yükler
      *
      * @param int $userId

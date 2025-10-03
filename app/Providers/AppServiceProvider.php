@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
         // Service bindings
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
         $this->app->bind(\App\Services\Contracts\WalletServiceInterface::class, \App\Services\WalletService::class);
+        $this->app->bind(\App\Services\Contracts\SplitServiceInterface::class, \App\Services\SplitService::class);
     }
 
     /**

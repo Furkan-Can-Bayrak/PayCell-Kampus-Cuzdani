@@ -332,7 +332,7 @@
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="margin-right:8px;">
                         <path d="M18,16.08C17.24,16.08 16.56,16.38 16.04,16.85L8.91,12.7C8.96,12.47 9,12.24 9,12C9,11.76 8.96,11.53 8.91,11.3L15.96,7.19C16.5,7.69 17.21,8 18,8A3,3 0 0,0 21,5A3,3 0 0,0 18,2A3,3 0 0,0 15,5C15,5.24 15.04,5.47 15.09,5.7L8.04,9.81C7.5,9.31 6.79,9 6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C6.79,15 7.5,14.69 8.04,14.19L15.16,18.34C15.11,18.55 15.08,18.77 15.08,19C15.08,20.61 16.39,21.91 18,21.91C19.61,21.91 20.92,20.61 20.92,19A2.92,2.92 0 0,0 18,16.08Z"/>
                     </svg>
-                    Talep Gönder
+                    Paylaşımı Gönder
                 </button>
             </div>
         </div>
@@ -748,11 +748,33 @@
 
             console.log('Paylaşım verisi:', shareData);
 
-            // Burada API çağrısı yapılacak
-            alert('Talep başarıyla gönderildi!');
+            // API çağrısı yap
+            try {
+                const response = await fetch('/create-split', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                    },
+                    body: JSON.stringify(shareData)
+                });
 
-            // Formu sıfırla
-            resetForm();
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    alert(`Paylaşım başarıyla gönderildi!\n${data.splits_count} kişiye toplam ₺${data.total_amount.toFixed(2)} tutarında istek gönderildi.`);
+
+                    // Ana sayfaya yönlendir
+                    setTimeout(() => {
+                        window.location.href = '{{ route("home") }}';
+                    }, 1500);
+                } else {
+                    alert(data.message || 'Paylaşım isteği gönderilirken hata oluştu.');
+                }
+            } catch (error) {
+                console.error('Split creation error:', error);
+                alert('Bağlantı hatası oluştu. Lütfen tekrar deneyin.');
+            }
         }
 
         function getFriendAmount(friendId) {
